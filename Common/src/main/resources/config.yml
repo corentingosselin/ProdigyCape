@@ -1,0 +1,13 @@
+language: "en_EN"
+custom_command: "cape"
+storage_mode: "file"
+
+#storage_mode: "mysql"
+#database_credentials:
+#  host: "localhost"
+#  port: 3306
+#  name: "prodigycape"
+#  user: "root"
+#  password: "root"
+
+
