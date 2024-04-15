@@ -1,4 +1,4 @@
-package fr.cocoraid.prodigycape.nms;
+package fr.cocoraid;
 
 import org.bukkit.entity.Player;
 

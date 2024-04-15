@@ -10,6 +10,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
+import fr.cocoraid.NmsHandler;
 import fr.cocoraid.prodigycape.commands.CapeCommand;
 import fr.cocoraid.prodigycape.commands.CapeCompletion;
 import fr.cocoraid.prodigycape.commands.CapeContext;
@@ -24,7 +25,6 @@ import fr.cocoraid.prodigycape.listener.TeleportListener;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.manager.ProdigyManager;
 
-import fr.cocoraid.prodigycape.nms.NmsHandler;
 import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.depends.minuskube.inv.InventoryManager;
 import org.bstats.bukkit.Metrics;
