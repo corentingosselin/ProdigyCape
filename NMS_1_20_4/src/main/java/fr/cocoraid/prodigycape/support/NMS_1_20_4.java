@@ -1,19 +1,23 @@
-package nms;
+package fr.cocoraid.prodigycape.support;
 
-import fr.cocoraid.NmsHandler;
+import fr.cocoraid.prodigycape.NmsHandler;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerPlayer;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public  class NMS_1_20_2 implements NmsHandler {
+public  class NMS_1_20_4 implements NmsHandler {
+
+    //private static final Class<?> craftPlayerClass = Reflection.getCraftBukkitClass("entity.CraftPlayer");
+    //private static final Reflection.MethodInvoker getHandleMethod = Reflection.getMethod(craftPlayerClass, "getHandle");
+
 
     @Override
     public Object clientInfoWithoutCape(Object object) {
@@ -33,7 +37,7 @@ public  class NMS_1_20_2 implements NmsHandler {
 
     @Override
     public void removeCape(Player player) {
-        ServerPlayer sp = ((CraftPlayer)player).getHandle();
+        ServerPlayer sp = ((CraftPlayer) player).getHandle();
 
         SynchedEntityData entityData = sp.getEntityData();
         entityData.set(new EntityDataAccessor<>(17, EntityDataSerializers.BYTE), (byte) 126);
@@ -44,4 +48,7 @@ public  class NMS_1_20_2 implements NmsHandler {
         ClientboundSetEntityDataPacket meta = new ClientboundSetEntityDataPacket(sp.getId(), eData);
         sp.connection.send(meta);
     }
+
+
+
 }

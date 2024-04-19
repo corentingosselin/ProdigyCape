@@ -200,8 +200,6 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
     }
 
 
-
-
     @Override
     public void savePlayer(UUID uuid) {
         ProdigyPlayer pp = manager.getProdigyPlayer(uuid);
@@ -217,7 +215,6 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
         try (Connection connection = hikari.getConnection()) {
             String sql = "INSERT INTO players (uuid, current_cape) VALUES (?, ?) ON DUPLICATE KEY UPDATE current_cape = ?";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                System.out.println("Saving player: " +pp.getCape().getCape().getKey());
                 ps.setString(1, uuid.toString());
                 ps.setString(2, pp.getCape().getCape().getKey());
                 ps.setString(3, pp.getCape().getCape().getKey());
@@ -300,25 +297,46 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
     @Override
     public void reload() {
 
+
+        initialize();
+
     }
 
-    private Connection startConnection() {
-        Connection connection = null;
-        if (mysqlDisconnected) {
-            return connection;
+    private void attemptReconnect(int retries) {
+        if (retries == 0) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: MySQL connection failed after retries.");
+            mysqlDisconnected = true;
+            return;
         }
+
+        // Schedule the reconnect task asynchronously
+        Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
+            try {
+                Connection connection = hikari.getConnection();
+                if (connection != null) {
+                    mysqlDisconnected = false;
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "MySQL reconnected successfully!");
+                    return;
+                }
+            } catch (SQLException e) {
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: Attempting to reconnect to MySQL. Remaining tries: " + retries);
+                e.printStackTrace();
+            }
+            attemptReconnect(retries - 1); // Recursive call to try again
+        }, 100L); // 100L = 100 ticks, equivalent to 5 seconds
+    }
+
+    public Connection startConnection() {
         try {
-            connection = hikari.getConnection();
-            if (connection == null) {
-                mysqlDisconnected = true;
+            Connection connection = hikari.getConnection();
+            if (connection != null) {
+                mysqlDisconnected = false;
                 return connection;
             }
-            return connection;
-
         } catch (SQLException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: MySQL disconnected. ");
-            mysqlDisconnected = true;
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: MySQL disconnected. Attempting to reconnect...");
             e.printStackTrace();
+            attemptReconnect(3); // Start retries with a specified count, e.g., 3
         }
         return null;
     }
@@ -339,7 +357,7 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
                     if (rs.next() && rs.getInt(1) > 0) {
 
                         // Cape exists, update it
-                        String updateCapeSql = "UPDATE capes SET enabled = ?, name = ?, description = ?, price = ?, limited_edition = ?, texture = ?, WHERE keyName = ?";
+                        String updateCapeSql = "UPDATE capes SET enabled = ?, name = ?, description = ?, price = ?, limited_edition = ?, texture = ? WHERE keyName = ?";
                         try (PreparedStatement updateStmt = connection.prepareStatement(updateCapeSql)) {
                             updateStmt.setInt(1, cape.isEnabled() ? 1 : 0);
                             updateStmt.setString(2, cape.getName());
@@ -350,6 +368,8 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
 
                             updateStmt.setString(7, cape.getKey());
                             updateStmt.executeUpdate();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
 
                     } else {
@@ -364,6 +384,8 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
                             insertStmt.setDouble(6, cape.getPrice());
                             insertStmt.setInt(7, cape.getLimitedEdition());
                             insertStmt.executeUpdate();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     }
                 }

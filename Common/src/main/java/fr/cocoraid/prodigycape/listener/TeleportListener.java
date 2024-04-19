@@ -1,6 +1,7 @@
 package fr.cocoraid.prodigycape.listener;
 
 import fr.cocoraid.prodigycape.ProdigyCape;
+import fr.cocoraid.prodigycape.cape.PlayerCape;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,14 +15,17 @@ public class TeleportListener implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
+        player.sendMessage("Teleport event");
 
-      /*  if (capeManager.hasCape(player)) {
+
+      /* if (capeManager.hasCape(player)) {
             PlayerCape playerCape = capeManager.getCurrentCape(player);
             if (!player.getPassengers().isEmpty()) {
                 player.getPassengers().forEach(player::removePassenger);
             }
             playerCape.getCapeDisplay().teleport(event.getTo());
             player.addPassenger(playerCape.getCapeDisplay());
+            playerCape.realigneCapeRotationToPlayerBodyYaw();
         }*/
     }
 }

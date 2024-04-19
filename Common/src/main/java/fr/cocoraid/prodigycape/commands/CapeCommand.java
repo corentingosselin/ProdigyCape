@@ -10,8 +10,12 @@ import fr.cocoraid.prodigycape.language.LanguageManager;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.inventory.CapeInventory;
+import fr.cocoraid.prodigycape.support.entities_1_20_4.DisplayItemNMS;
+import fr.cocoraid.prodigycape.utils.ItemEditor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 @CommandAlias("%cape")
 public class CapeCommand extends BaseCommand {
@@ -88,6 +92,23 @@ public class CapeCommand extends BaseCommand {
         }
     }
 
+
+
+    @CommandPermission("prodigycape.admin")
+    @Subcommand("test")
+    public void onCapeTest(Player player) {
+        player.sendMessage("§aCape test.");
+
+
+        ItemStack item = new ItemEditor(Material.PLAYER_HEAD)
+                .setTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjc3MDVlM2U5OTdlNWNlNTIxNjY2M2M5ZTY0YjM5NmZhNDNlZGRlODI1NWZkOTEwZjBjYzgxYTAzMjVlNmIifX19").getItem();
+        DisplayItemNMS displayItemNMS = new DisplayItemNMS(player.getWorld());
+        displayItemNMS.setLocation(player.getLocation());
+        displayItemNMS.setItemStack(item);
+        displayItemNMS.spawn();
+        displayItemNMS.mount(player);
+
+    }
 
 
 

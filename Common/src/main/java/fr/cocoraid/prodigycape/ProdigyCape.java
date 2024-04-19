@@ -10,7 +10,6 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
-import fr.cocoraid.NmsHandler;
 import fr.cocoraid.prodigycape.commands.CapeCommand;
 import fr.cocoraid.prodigycape.commands.CapeCompletion;
 import fr.cocoraid.prodigycape.commands.CapeContext;
@@ -26,6 +25,7 @@ import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.manager.ProdigyManager;
 
 import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
+import fr.cocoraid.prodigycape.utils.VersionChecker;
 import fr.depends.minuskube.inv.InventoryManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
@@ -106,6 +106,10 @@ public final class ProdigyCape extends JavaPlugin {
                 Player player = event.getPlayer();
                 PacketContainer packet = event.getPacket();
 
+                if(VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1)) {
+                    packet.getModifier().write(4,126);
+                    return;
+                }
                 Object clientInformation = packet.getModifier().read(0);
                 Object newClientInfo = nmsHandler.clientInfoWithoutCape(clientInformation);
                 packet.getModifier().write(0, newClientInfo);

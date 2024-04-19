@@ -1,11 +1,11 @@
 package fr.cocoraid.prodigycape.nms;
 
-import fr.cocoraid.NmsHandler;
+import fr.cocoraid.prodigycape.NmsHandler;
 import fr.cocoraid.prodigycape.utils.VersionChecker;
-import nms.NMS_1_19_4;
-import nms.NMS_1_20_1;
-import nms.NMS_1_20_2;
-import nms.NMS_1_20_4;
+import fr.cocoraid.prodigycape.support.NMS_1_19_4;
+import fr.cocoraid.prodigycape.support.NMS_1_20_1;
+import fr.cocoraid.prodigycape.support.NMS_1_20_2;
+import fr.cocoraid.prodigycape.support.NMS_1_20_4;
 
 public class NmsHandlerFactory {
 
