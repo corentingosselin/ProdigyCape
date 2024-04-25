@@ -1,11 +1,11 @@
 package fr.cocoraid.prodigycape.cape;
 
 import fr.cocoraid.prodigycape.ProdigyCape;
+import fr.cocoraid.prodigycape.support.entities_1_20_4.DisplayItemNMS;
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
 import fr.cocoraid.prodigycape.utils.VersionChecker;
 import org.bukkit.Material;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,10 +30,9 @@ public class PlayerCape {
     private boolean spawned = false;
 
     private ItemStack capeItem;
-    private ItemDisplay capeDisplay;
+    private DisplayItemNMS capeDisplay;
     private Player player;
     private Cape cape;
-
 
 
     // moving data
@@ -63,50 +62,42 @@ public class PlayerCape {
             player.getPassengers().forEach(player::removePassenger);
         }
 
-        capeDisplay = player.getWorld().spawn(player.getLocation(), ItemDisplay.class);
+        capeDisplay = new DisplayItemNMS(player.getWorld());
         capeDisplay.setItemStack(capeItem);
+        capeDisplay.setLocation(player.getLocation());
+        capeDisplay.spawn();
 
         float height = 1.9f;
         Transformation transformation = capeDisplay.getTransformation();
         transformation.getScale().set(1.2f, height, 0.08f);
         capeDisplay.setTransformation(transformation);
-
-        player.addPassenger(capeDisplay);
+        capeDisplay.mount(player);
 
         task = new BukkitRunnable() {
 
             @Override
             public void run() {
 
-                if(capeDisplay.getVehicle() == null && spawned) {
-                    // look for the player, if still online·
-                    capeDisplay.teleport(player.getLocation());
-                    player.addPassenger(capeDisplay);
-                }
+                if (!spawned) return;
 
-                if(capeDisplay.isVisibleByDefault() && player.isSleeping()) {
-                    visible(false);
 
-                    return;
-                } else if (!capeDisplay.isVisibleByDefault() && !player.isSleeping()) {
-                    realigneCapeRotationToPlayerBodyYaw();
-                    visible(true);
-                    return;
-                }
-
-                if ((player.isInvisible() || hasElytra() || player.isSwimming()  || player.isDead())
-                        && capeDisplay.isVisibleByDefault()) {
-                    visible(false);
-                } else if (!player.isInvisible() && !hasElytra() && !player.isSwimming() && !player.isDead()
-                        && !capeDisplay.isVisibleByDefault()) {
-                    visible(true);
-
+                if (visible) {
+                    if (player.isSleeping() || player.isInvisible() || player.isSwimming() || player.isDead() || hasElytra()) {
+                        visible(false);
+                        return;
+                    }
+                } else {
+                    if (!player.isSleeping() && !player.isInvisible() && !player.isSwimming() && !player.isDead() && !hasElytra()) {
+                        visible(true);
+                        realigneCapeRotationToPlayerBodyYaw();
+                        return;
+                    }
                 }
 
                 if (!visible) {
                     return;
                 }
-                targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100); // Adjust formula as needed
+                targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
                 currentCapeXRotation += (targetCapeXRotation - currentCapeXRotation) * ROTATION_INTERPOLATION_SPEED;
                 update(currentBodyYaw);
 
@@ -115,6 +106,27 @@ public class PlayerCape {
         }.runTaskTimer(ProdigyCape.getInstance(), 0, 0);
 
         this.spawned = true;
+    }
+
+    public void spawnForPlayer(Player player, Player wearer) {
+        if (!spawned) {
+            return;
+        }
+        this.capeDisplay.spawn(player);
+        this.capeDisplay.setLocation(wearer.getLocation());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                capeDisplay.mount(player, wearer);
+            }
+        }.runTaskLater(ProdigyCape.getInstance(), 1);
+    }
+
+    public void despawnForPlayer(Player player) {
+        if (!spawned) {
+            return;
+        }
+        capeDisplay.despawn(player);
     }
 
     private boolean hasElytra() {
@@ -130,7 +142,7 @@ public class PlayerCape {
         }
         if (capeDisplay != null) {
             visible(true);
-            capeDisplay.remove();
+            capeDisplay.despawn();
             capeDisplay = null;
         }
 
@@ -223,12 +235,17 @@ public class PlayerCape {
         return cape;
     }
 
-    public ItemDisplay getCapeDisplay() {
+    public DisplayItemNMS getCapeDisplay() {
         return capeDisplay;
     }
 
     public void visible(boolean visibility) {
-        capeDisplay.setVisibleByDefault(visibility);
+        if (visibility) {
+            capeDisplay.spawn();
+            capeDisplay.mount(player);
+        } else {
+            capeDisplay.despawn();
+        }
         this.visible = visibility;
     }
 

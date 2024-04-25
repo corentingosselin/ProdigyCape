@@ -8,4 +8,7 @@ public interface NmsHandler {
 
     void removeCape(Player player);
 
+    int getEntityId(Player player);
+
+
 }

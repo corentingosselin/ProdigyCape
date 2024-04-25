@@ -1,5 +1,6 @@
 package fr.cocoraid.prodigycape.support.entities_1_20_4;
 
+import com.google.common.base.Preconditions;
 import com.mojang.math.Transformation;
 import fr.cocoraid.prodigycape.Reflection;
 import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
@@ -23,6 +24,7 @@ public class DisplayNMS extends EntityNMS {
         super(world, name);
         this.display = (Display) entity;
         this.entity = entity;
+
     }
 
 
@@ -37,9 +39,16 @@ public class DisplayNMS extends EntityNMS {
         return this;
     }
 
-    public DisplayNMS setTransformation(Transformation transform) {
-        display.setTransformation(transform);
-        return this;
+    public org.bukkit.util.Transformation getTransformation() {
+        com.mojang.math.Transformation nms = net.minecraft.world.entity.Display.createTransformation(display.getEntityData());
+        return new org.bukkit.util.Transformation(nms.getTranslation(), nms.getLeftRotation(), nms.getScale(), nms.getRightRotation());
+    }
+
+    public void setTransformation(org.bukkit.util.Transformation transformation) {
+        Preconditions.checkArgument(transformation != null, "Transformation cannot be null");
+        display.setTransformation(new com.mojang.math.Transformation(transformation.getTranslation(), transformation.getLeftRotation(), transformation.getScale(), transformation.getRightRotation()));
+        update();
+
     }
 
     public DisplayNMS setMaxBrightness() {
@@ -48,10 +57,7 @@ public class DisplayNMS extends EntityNMS {
     }
 
 
-    public void updateTransformation(Transformation transform) {
-        display.setTransformation(transform);
-        update();
-    }
+
 
     private Reflection.FieldAccessor passengersField = Reflection.getField(ClientboundSetPassengersPacket.class, int[].class, 0);
     public void mount(Player player) {

@@ -10,6 +10,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
+import fr.cocoraid.prodigycape.cape.PlayerCape;
 import fr.cocoraid.prodigycape.commands.CapeCommand;
 import fr.cocoraid.prodigycape.commands.CapeCompletion;
 import fr.cocoraid.prodigycape.commands.CapeContext;
@@ -28,10 +29,14 @@ import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.cocoraid.prodigycape.utils.VersionChecker;
 import fr.depends.minuskube.inv.InventoryManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public final class ProdigyCape extends JavaPlugin {
 
@@ -106,8 +111,8 @@ public final class ProdigyCape extends JavaPlugin {
                 Player player = event.getPlayer();
                 PacketContainer packet = event.getPacket();
 
-                if(VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1)) {
-                    packet.getModifier().write(4,126);
+                if (VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1)) {
+                    packet.getModifier().write(4, 126);
                     return;
                 }
                 Object clientInformation = packet.getModifier().read(0);
@@ -119,6 +124,83 @@ public final class ProdigyCape extends JavaPlugin {
 
         manager.addPacketListener(packetAdapter);
 
+        PacketAdapter packetMount = new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.MOUNT) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Player player = event.getPlayer();
+                PacketContainer packet = event.getPacket();
+                int[] entities = (int[]) packet.getModifier().read(1);
+                PlayerCape playerCape = capeManager.getCurrentCape(player);
+                if (playerCape == null) return;
+
+                if (entities.length == 0) {
+                    packet.getModifier().write(1, new int[]{playerCape.getCapeDisplay().getId()});
+                    return;
+                }
+
+                int capeId = playerCape.getCapeDisplay().getId();
+                if (entities.length == 1) {
+                    int potentialCapeId = entities[0];
+                    if (potentialCapeId == capeId) return;
+                }
+
+
+                int[] newEntities = new int[entities.length + 1];
+                // make the capeID the first entity
+                newEntities[0] = capeId;
+                for (int i = 0; i < entities.length; i++) {
+                    newEntities[i + 1] = entities[i];
+                }
+                packet.getModifier().write(1, newEntities);
+
+            }
+        };
+
+        manager.addPacketListener(packetMount);
+
+
+        PacketAdapter spawnPacket = new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.NAMED_ENTITY_SPAWN, PacketType.Play.Server.SPAWN_ENTITY) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Player player = event.getPlayer();
+                PacketContainer packet = event.getPacket();
+                UUID uuid = packet.getUUIDs().read(0);
+                Player target = Bukkit.getPlayer(uuid);
+                if (target == null) return;
+                PlayerCape playerCape = capeManager.getCurrentCape(target);
+                if (playerCape == null) return;
+                playerCape.spawnForPlayer(player, target);
+
+            }
+        };
+
+        manager.addPacketListener(spawnPacket);
+
+        PacketAdapter despawnPacket = new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_DESTROY) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Player player = event.getPlayer();
+                PacketContainer packet = event.getPacket();
+                List<Integer> list = packet.getIntLists().read(0);
+
+                prodigyManager.getProdigyPlayers().keySet().forEach(uuid -> {
+                    Player target = Bukkit.getPlayer(uuid);
+                    if (target == null) return;
+                    PlayerCape playerCape = capeManager.getCurrentCape(target);
+                    if (playerCape == null) return;
+                    int playerId = nmsHandler.getEntityId(target);
+                    if (list.contains(playerId)) {
+                        playerCape.despawnForPlayer(player);
+                    }
+                });
+
+
+
+
+            }
+        };
+
+        manager.addPacketListener(despawnPacket);
 
     }
 

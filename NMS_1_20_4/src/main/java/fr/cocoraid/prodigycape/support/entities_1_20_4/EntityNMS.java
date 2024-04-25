@@ -26,6 +26,7 @@ public abstract class EntityNMS {
     }
 
     public void spawn(Player player) {
+
         Packet spawn = null;
         if (entity instanceof LivingEntity)
             spawn = new ClientboundAddEntityPacket(entity);
@@ -48,6 +49,7 @@ public abstract class EntityNMS {
 
         NMS.sendPacket(player, spawn);
         sendMetaPacket(player);
+
     }
 
     public void spawn() {
@@ -74,6 +76,7 @@ public abstract class EntityNMS {
         NMS.sendPacket(world, spawn);
         sendMetaPacket(world);
     }
+
     public void despawn(Player player) {
         ClientboundRemoveEntitiesPacket destroy = new ClientboundRemoveEntitiesPacket(getId());
         NMS.sendPacket(player, destroy);
@@ -159,4 +162,5 @@ public abstract class EntityNMS {
             NMS.sendPacket(world, meta);
         }
     }
+
 }

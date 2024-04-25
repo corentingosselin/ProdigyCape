@@ -49,6 +49,8 @@ public  class NMS_1_20_4 implements NmsHandler {
         sp.connection.send(meta);
     }
 
-
-
+    @Override
+    public int getEntityId(Player player) {
+        return ((CraftPlayer) player).getHandle().getId();
+    }
 }

@@ -35,4 +35,10 @@ public  class NMS_1_20_1 implements NmsHandler {
         ClientboundSetEntityDataPacket meta = new ClientboundSetEntityDataPacket(sp.getId(), eData);
         sp.connection.send(meta);
     }
+
+    @Override
+    public int getEntityId(Player player) {
+        return ((CraftPlayer) player).getHandle().getId();
+    }
+
 }
