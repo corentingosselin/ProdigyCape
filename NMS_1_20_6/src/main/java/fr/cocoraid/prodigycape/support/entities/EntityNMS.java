@@ -1,11 +1,15 @@
-package fr.cocoraid.prodigycape.support;
+package fr.cocoraid.support.entities;
 
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,18 +28,59 @@ public abstract class EntityNMS {
 
     public EntityNMS(World world, String ENTITY) {
         this.ENTITY = ENTITY;
+        this.world = world;
     }
 
     public void spawn(Player player) {
-        Vec3 vec = new Vec3(0, 0, 0);
-        ClientboundAddEntityPacket spawn = new ClientboundAddEntityPacket(getId(),
-                getUniqueID(),
-                location.getX(), location.getY(), location.getZ(),
-                0f, 0f,
-                entity.getType(), 0, vec, 0);
+
+        Packet spawn = null;
+        if (entity instanceof LivingEntity)
+            spawn = new ClientboundAddEntityPacket(entity);
+        else if (entity instanceof LightningBolt) {
+
+            Vec3 vec = new Vec3(0, 0, 0);
+            spawn = new ClientboundAddEntityPacket(getId(),
+                    getUniqueID(),
+                    location.getX(), location.getY(), location.getZ(),
+                    0f, 0f,
+                    EntityType.LIGHTNING_BOLT, 0, vec, 0);
+        } else {
+            Vec3 vec = new Vec3(0, 0, 0);
+            spawn = new ClientboundAddEntityPacket(getId(),
+                    getUniqueID(),
+                    location.getX(), location.getY(), location.getZ(),
+                    0f, 0f,
+                    entity.getType(), 0, vec, 0);
+        }
 
         NMS.sendPacket(player, spawn);
         sendMetaPacket(player);
+
+    }
+
+    public void spawn() {
+        Packet spawn = null;
+        if (entity instanceof LivingEntity)
+            spawn = new ClientboundAddEntityPacket(entity);
+        else if (entity instanceof LightningBolt) {
+
+            Vec3 vec = new Vec3(0, 0, 0);
+            spawn = new ClientboundAddEntityPacket(getId(),
+                    getUniqueID(),
+                    location.getX(), location.getY(), location.getZ(),
+                    0f, 0f,
+                    EntityType.LIGHTNING_BOLT, 0, vec, 0);
+        } else {
+            Vec3 vec = new Vec3(0, 0, 0);
+            spawn = new ClientboundAddEntityPacket(getId(),
+                    getUniqueID(),
+                    location.getX(), location.getY(), location.getZ(),
+                    0f, 0f,
+                    entity.getType(), 0, vec, 0);
+        }
+
+        NMS.sendPacket(world, spawn);
+        sendMetaPacket(world);
     }
 
     public void despawn(Player player) {
@@ -43,8 +88,17 @@ public abstract class EntityNMS {
         NMS.sendPacket(player, destroy);
     }
 
+    public void despawn() {
+        ClientboundRemoveEntitiesPacket destroy = new ClientboundRemoveEntitiesPacket(getId());
+        NMS.sendPacket(world, destroy);
+    }
+
     public void update(Player player) {
         sendMetaPacket(player);
+    }
+
+    public void update() {
+        sendMetaPacket(world);
     }
 
     /**
@@ -55,6 +109,12 @@ public abstract class EntityNMS {
         setLocation(location);
         ClientboundTeleportEntityPacket tp = new ClientboundTeleportEntityPacket(entity);
         NMS.sendPacket(player, tp);
+    }
+
+    public void teleport(Location location) {
+        setLocation(location);
+        ClientboundTeleportEntityPacket tp = new ClientboundTeleportEntityPacket(entity);
+        NMS.sendPacket(world, tp);
     }
 
     public EntityNMS setLocation(Location location) {
@@ -100,4 +160,13 @@ public abstract class EntityNMS {
             NMS.sendPacket(player, meta);
         }
     }
+
+    public void sendMetaPacket(World world) {
+        @Nullable List<SynchedEntityData.DataValue<?>> metas = getDataWatcher().getNonDefaultValues();
+        if (metas != null && !metas.isEmpty()) {
+            ClientboundSetEntityDataPacket meta = new ClientboundSetEntityDataPacket(getId(), metas);
+            NMS.sendPacket(world, meta);
+        }
+    }
+
 }

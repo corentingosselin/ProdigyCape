@@ -1,4 +1,4 @@
-package fr.cocoraid.prodigycape.support;
+package fr.cocoraid.prodigycape.support.entities;
 
 
 import net.minecraft.network.protocol.Packet;
@@ -23,5 +23,6 @@ public class NMS {
     public static void sendPacket(Player player, Packet<?> packet) {
         ((CraftPlayer) player).getHandle().connection.send(packet);
     }
+
 
 }

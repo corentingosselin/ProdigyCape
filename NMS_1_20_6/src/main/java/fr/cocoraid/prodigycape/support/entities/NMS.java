@@ -1,10 +1,10 @@
-package fr.cocoraid.prodigycape.support;
+package fr.cocoraid.support.entities;
 
 
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class NMS {
@@ -23,5 +23,6 @@ public class NMS {
     public static void sendPacket(Player player, Packet<?> packet) {
         ((CraftPlayer) player).getHandle().connection.send(packet);
     }
+
 
 }
