@@ -1,4 +1,4 @@
-package fr.cocoraid.support.entities;
+package fr.cocoraid.prodigycape.support.entities;
 
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;

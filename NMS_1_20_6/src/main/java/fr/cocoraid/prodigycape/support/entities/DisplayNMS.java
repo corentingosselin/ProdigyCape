@@ -1,4 +1,4 @@
-package fr.cocoraid.support.entities;
+package fr.cocoraid.prodigycape.support.entities;
 
 import com.google.common.base.Preconditions;
 import com.mojang.math.Transformation;

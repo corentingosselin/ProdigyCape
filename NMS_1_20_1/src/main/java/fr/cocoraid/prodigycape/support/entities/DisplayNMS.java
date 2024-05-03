@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Color;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 

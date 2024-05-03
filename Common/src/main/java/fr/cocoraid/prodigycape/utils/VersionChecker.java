@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
  */
 public enum VersionChecker {
 
-   v1_19_R2(0), v1_19_R3(1), v1_20_R1(2),  v1_20_R2(3), v1_20_R3(4);
+   v1_19_R2(0), v1_19_R3(1), v1_20_R1(2),  v1_20_R2(3), v1_20_R3(4), v1_20_R4(5);
 
     private static VersionChecker currentVersion = VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
     private int index;

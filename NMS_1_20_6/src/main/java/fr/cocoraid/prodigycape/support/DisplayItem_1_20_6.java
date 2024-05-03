@@ -1,4 +1,4 @@
-package fr.cocoraid.support;
+package fr.cocoraid.prodigycape.support;
 
 import fr.cocoraid.prodigycape.IDisplayItem;
 
@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
-import fr.cocoraid.support.entities.DisplayItemNMS;
+import fr.cocoraid.prodigycape.support.entities.DisplayItemNMS;
 
 public class DisplayItem_1_20_6 implements IDisplayItem {
 
@@ -53,6 +53,11 @@ public class DisplayItem_1_20_6 implements IDisplayItem {
     @Override
     public Transformation getTransformation() {
         return displayItemNMS.getTransformation();
+    }
+
+    @Override
+    public int getId() {
+        return displayItemNMS.getId();
     }
 }
 

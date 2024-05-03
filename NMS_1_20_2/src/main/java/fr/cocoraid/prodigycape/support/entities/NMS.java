@@ -3,9 +3,8 @@ package fr.cocoraid.prodigycape.support.entities;
 
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.Bukkit;
-
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class NMS {

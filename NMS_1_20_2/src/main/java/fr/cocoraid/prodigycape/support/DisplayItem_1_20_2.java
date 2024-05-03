@@ -2,13 +2,12 @@ package fr.cocoraid.prodigycape.support;
 
 import fr.cocoraid.prodigycape.IDisplayItem;
 import fr.cocoraid.prodigycape.support.entities.DisplayItemNMS;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
-public class DisplayItem_1_20_4 implements IDisplayItem {
+public class DisplayItem_1_20_2 implements IDisplayItem {
 
     private DisplayItemNMS displayItemNMS;
 
@@ -53,6 +52,11 @@ public class DisplayItem_1_20_4 implements IDisplayItem {
     @Override
     public Transformation getTransformation() {
         return displayItemNMS.getTransformation();
+    }
+
+    @Override
+    public int getId() {
+        return displayItemNMS.getId();
     }
 }
 

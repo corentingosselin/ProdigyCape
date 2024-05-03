@@ -7,11 +7,11 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-public class DisplayItemNMS_1_20_4 extends DisplayNMS {
+public class DisplayItemNMS extends DisplayNMS {
 
     private Display.ItemDisplay display;
 
-    public DisplayItemNMS_1_20_4(World world) {
+    public DisplayItemNMS(World world) {
         super(world, "DISPLAY_ITEM", new Display.ItemDisplay(EntityType.ITEM_DISPLAY, ((CraftWorld) world).getHandle()));
         this.display = (Display.ItemDisplay) entity;
     }

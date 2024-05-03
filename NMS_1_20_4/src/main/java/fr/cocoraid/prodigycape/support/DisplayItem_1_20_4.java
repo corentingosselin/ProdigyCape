@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
-public class DisplayItemWrapper implements IDisplayItem {
+public class DisplayItem_1_20_4 implements IDisplayItem {
 
     private DisplayItemNMS displayItemNMS;
 
@@ -53,6 +53,11 @@ public class DisplayItemWrapper implements IDisplayItem {
     @Override
     public Transformation getTransformation() {
         return displayItemNMS.getTransformation();
+    }
+
+    @Override
+    public int getId() {
+        return displayItemNMS.getId();
     }
 }
 

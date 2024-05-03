@@ -1,7 +1,8 @@
 package fr.cocoraid.prodigycape.cape;
 
+import fr.cocoraid.prodigycape.IDisplayItem;
 import fr.cocoraid.prodigycape.ProdigyCape;
-import fr.cocoraid.prodigycape.support.entities_1_20_4.DisplayItemNMS;
+import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
 import fr.cocoraid.prodigycape.utils.VersionChecker;
@@ -15,6 +16,8 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class PlayerCape {
+
+    private static ProdigyCape instance = ProdigyCape.getInstance();
 
 
     private float Y_OFFSET_TRANSLATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1) ? 0.0f : -0.4f;
@@ -30,7 +33,7 @@ public class PlayerCape {
     private boolean spawned = false;
 
     private ItemStack capeItem;
-    private DisplayItemNMS capeDisplay;
+    private IDisplayItem capeDisplay;
     private Player player;
     private Cape cape;
 
@@ -62,10 +65,8 @@ public class PlayerCape {
             player.getPassengers().forEach(player::removePassenger);
         }
 
-        capeDisplay = new DisplayItemNMS(player.getWorld());
-        capeDisplay.setItemStack(capeItem);
-        capeDisplay.setLocation(player.getLocation());
-        capeDisplay.spawn();
+        capeDisplay = NmsHandlerFactory.getDisplayItem();
+        capeDisplay.spawn(player.getLocation(), capeItem);
 
         float height = 1.9f;
         Transformation transformation = capeDisplay.getTransformation();
@@ -113,7 +114,7 @@ public class PlayerCape {
             return;
         }
         this.capeDisplay.spawn(player);
-        this.capeDisplay.setLocation(wearer.getLocation());
+        //this.capeDisplay.setLocation(wearer.getLocation());
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -235,13 +236,13 @@ public class PlayerCape {
         return cape;
     }
 
-    public DisplayItemNMS getCapeDisplay() {
+    public IDisplayItem getCapeDisplay() {
         return capeDisplay;
     }
 
     public void visible(boolean visibility) {
         if (visibility) {
-            capeDisplay.spawn();
+            capeDisplay.spawn(player.getLocation(), capeItem);
             capeDisplay.mount(player);
         } else {
             capeDisplay.despawn();

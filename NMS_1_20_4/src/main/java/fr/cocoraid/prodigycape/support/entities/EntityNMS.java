@@ -1,4 +1,4 @@
-package fr.cocoraid.prodigycape.support.entities_1_20_4;
+package fr.cocoraid.prodigycape.support.entities;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;

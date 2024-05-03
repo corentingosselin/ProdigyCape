@@ -134,6 +134,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>fr.cocoraid.prodigycape</groupId>
+            <artifactId>NMS_1_20_6</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
 
 
 

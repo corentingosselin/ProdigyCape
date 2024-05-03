@@ -1,4 +1,4 @@
-package fr.cocoraid.support;
+package fr.cocoraid.prodigycape.support;
 
 import fr.cocoraid.prodigycape.NmsHandler;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
