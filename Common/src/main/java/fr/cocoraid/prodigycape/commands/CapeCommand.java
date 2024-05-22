@@ -16,6 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 @CommandAlias("%cape")
 public class CapeCommand extends BaseCommand {
 
@@ -33,9 +35,9 @@ public class CapeCommand extends BaseCommand {
     @CommandPermission("prodigycape.help")
     @Subcommand("help")
     public void onCapeHelp(Player player) {
-
-        if(player.hasPermission("prodigycape.admin")) {
-
+        List<String> help = languageManager.getLanguage().help_commands;
+        for (String s : help) {
+            player.sendMessage(s);
         }
     }
 
@@ -96,9 +98,7 @@ public class CapeCommand extends BaseCommand {
     @CommandPermission("prodigycape.admin")
     @Subcommand("test")
     public void onCapeTest(Player player) {
-        player.sendMessage("§aCape test.");
-
-
+        player.sendMessage("§aNothing to test right now, nice try ;) Don't worry this is admin command only");
     }
 
 

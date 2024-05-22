@@ -1,7 +1,7 @@
 package fr.cocoraid.prodigycape.support;
 
 import fr.cocoraid.prodigycape.IDisplayItem;
-import fr.cocoraid.prodigycape.support.entities.DisplayItemNMS;
+import fr.cocoraid.prodigycape.support.entities_1_20_4.DisplayItemNMS;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

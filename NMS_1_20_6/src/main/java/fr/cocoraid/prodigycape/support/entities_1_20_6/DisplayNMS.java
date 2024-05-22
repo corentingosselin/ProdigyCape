@@ -1,6 +1,7 @@
-package fr.cocoraid.prodigycape.support.entities;
+package fr.cocoraid.prodigycape.support.entities_1_20_6;
 
 import com.google.common.base.Preconditions;
+import com.mojang.math.Transformation;
 import fr.cocoraid.prodigycape.Reflection;
 import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +10,7 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Color;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 
@@ -39,13 +40,13 @@ public class DisplayNMS extends EntityNMS {
     }
 
     public org.bukkit.util.Transformation getTransformation() {
-        com.mojang.math.Transformation nms = Display.createTransformation(display.getEntityData());
+        Transformation nms = Display.createTransformation(display.getEntityData());
         return new org.bukkit.util.Transformation(nms.getTranslation(), nms.getLeftRotation(), nms.getScale(), nms.getRightRotation());
     }
 
     public void setTransformation(org.bukkit.util.Transformation transformation) {
         Preconditions.checkArgument(transformation != null, "Transformation cannot be null");
-        display.setTransformation(new com.mojang.math.Transformation(transformation.getTranslation(), transformation.getLeftRotation(), transformation.getScale(), transformation.getRightRotation()));
+        display.setTransformation(new Transformation(transformation.getTranslation(), transformation.getLeftRotation(), transformation.getScale(), transformation.getRightRotation()));
         update();
 
     }
@@ -54,6 +55,9 @@ public class DisplayNMS extends EntityNMS {
         display.setBrightnessOverride(new Brightness(15,15));
         return this;
     }
+
+
+
 
     private Reflection.FieldAccessor passengersField = Reflection.getField(ClientboundSetPassengersPacket.class, int[].class, 0);
     public void mount(Player player) {

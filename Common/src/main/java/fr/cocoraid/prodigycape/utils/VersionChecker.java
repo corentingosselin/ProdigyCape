@@ -9,7 +9,22 @@ public enum VersionChecker {
 
    v1_19_R2(0), v1_19_R3(1), v1_20_R1(2),  v1_20_R2(3), v1_20_R3(4), v1_20_R4(5);
 
-    private static VersionChecker currentVersion = VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
+    private static VersionChecker currentVersion;
+    private static boolean isPapermc = false;
+    static {
+        try {
+            Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData");
+            isPapermc = true;
+        } catch (ClassNotFoundException ignored) {
+        }
+
+        if(isPapermc && Bukkit.getBukkitVersion().contains("1.20.6")) {
+            currentVersion = VersionChecker.v1_20_R4;
+        } else {
+            currentVersion =  VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
+        }
+    }
+
     private int index;
 
     VersionChecker(int index) {

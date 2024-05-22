@@ -1,4 +1,4 @@
-package fr.cocoraid.prodigycape.support.entities;
+package fr.cocoraid.prodigycape.support.entities_1_20_1;
 
 import com.google.common.base.Preconditions;
 import fr.cocoraid.prodigycape.Reflection;

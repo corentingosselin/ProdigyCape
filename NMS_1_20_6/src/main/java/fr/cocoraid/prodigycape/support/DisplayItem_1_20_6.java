@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
-import fr.cocoraid.prodigycape.support.entities.DisplayItemNMS;
+import fr.cocoraid.prodigycape.support.entities_1_20_6.DisplayItemNMS;
 
 public class DisplayItem_1_20_6 implements IDisplayItem {
 

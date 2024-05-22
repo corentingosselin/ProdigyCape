@@ -1,10 +1,10 @@
-package fr.cocoraid.prodigycape.support.entities;
+package fr.cocoraid.prodigycape.support.entities_1_19_4;
 
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class DisplayItemNMS extends DisplayNMS {

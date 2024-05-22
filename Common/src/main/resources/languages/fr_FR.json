@@ -1,11 +1,36 @@
 {
-
   "next_button": "&7Suivant",
   "previous_button": "&7Précédent",
-  "sexonthebeach_displayname": "&5Sex On The beach",
-  "sexonthebeach_lore": [
-    "&dL'abus d'alcool est dangereux pour la santé"
+  "owned_capes_menu_title": "Mes capes",
+  "owned_capes_showcase_menu_title": "Mes capes",
+  "no_capes_close": "&cDésolé, il n'y a pas de capes ici\nFermez l'inventaire",
+  "shop_capes_menu_title": "Boutique officielle de capes",
+  "equipped": "\n&a&lÉquipé",
+  "no_enough_money": "&cVous n'avez pas assez d'argent",
+  "something_wrong": "&cQuelque chose a mal tourné, veuillez contacter un administrateur",
+  "cape_resell_not_allowed": "&cLa revente de cape n'est pas autorisée",
+  "confirm": "&aConfirmer",
+  "cancel": "&cAnnuler",
+  "confirmation_menu_title": "Confirmation d'achat",
+  "confirm_purchase": "\n&aConfirmer l'achat",
+  "click_to_purchase": "\n&aCliquez pour acheter",
+  "price": "&7Prix: &6%price",
+  "currency": "$",
+  "no_eco_plugin": "&cAucune boutique de capes disponible, veuillez contacter un administrateur",
+  "cape_purchased_and_equipped": "&aCape achetée et maintenant équipée ! Vous pouvez trouver toutes vos capes en utilisant /cape menu",
+  "sold_out": "&cÉpuisé ! Désolé, il ne reste plus de cape pour cet article",
+  "no_permission": "&cVous n'avez pas la permission de faire cela",
+  "limited_edition": "\n&cÉdition limitée: %cape_left_number restantes",
+  "bought_info": [
+    "&5Numéro d'édition: #&d%edition &5/ %total",
+    "&6Acheté pour: %price",
+    "&7Date d'achat: %date"
+  ],
+  "help_commands": [
+    "&7- &6/cape help &7: Afficher cette aide",
+    "&7- &6/cape menu &7: Ouvrir le menu des capes",
+    "&7- &6/cape shop &7: Ouvrir la boutique de capes",
+    "&7- &6/cape apply <cape> &7: Appliquer une cape",
+    "&7- &6/cape resell <cape> &7: Revendre une cape"
   ]
 }
-
-

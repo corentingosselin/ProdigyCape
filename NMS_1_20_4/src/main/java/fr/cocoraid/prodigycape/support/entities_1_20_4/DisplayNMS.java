@@ -1,4 +1,4 @@
-package fr.cocoraid.prodigycape.support.entities;
+package fr.cocoraid.prodigycape.support.entities_1_20_4;
 
 import com.google.common.base.Preconditions;
 import fr.cocoraid.prodigycape.Reflection;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Color;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 
@@ -39,7 +39,7 @@ public class DisplayNMS extends EntityNMS {
     }
 
     public org.bukkit.util.Transformation getTransformation() {
-        com.mojang.math.Transformation nms = Display.createTransformation(display.getEntityData());
+        com.mojang.math.Transformation nms = net.minecraft.world.entity.Display.createTransformation(display.getEntityData());
         return new org.bukkit.util.Transformation(nms.getTranslation(), nms.getLeftRotation(), nms.getScale(), nms.getRightRotation());
     }
 

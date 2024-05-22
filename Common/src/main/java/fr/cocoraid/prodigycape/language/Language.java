@@ -46,14 +46,13 @@ public class Language extends LanguageAbstract {
             "§7Buy date: %date"
     ));
 
-    //inventory
-
-    public String event_menu_title = "Available events";
-    public List<String> event_menu_lore = new ArrayList<>(Arrays.asList(
-            "§3Tickets: %ticket_ratio",
-            "§3Start: " + "%start",
-            "§3End: " + "%end",
-            "§3Place: §b" + "%nightclub"));
+    public List<String> help_commands = new ArrayList<>(Arrays.asList(
+            "§7- §6/cape help §7: Show this help",
+            "§7- §6/cape menu §7: Open the cape menu",
+            "§7- §6/cape shop §7: Open the cape shop",
+            "§7- §6/cape apply <cape> §7: Apply a cape",
+            "§7- §6/cape resell <cape> §7: Resell a cape"
+    ));
 
 
 }

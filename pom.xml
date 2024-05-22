@@ -50,7 +50,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>/Users/prodigy/Documents/minecraft/serveur/1.20.4/plugins</outputDirectory>
+                    <outputDirectory>/Users/prodigy/Documents/minecraft/serveur/1.20.6/plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
