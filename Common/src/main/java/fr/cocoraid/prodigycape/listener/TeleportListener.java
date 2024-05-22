@@ -6,26 +6,50 @@ import fr.cocoraid.prodigycape.manager.CapeManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportListener implements Listener {
 
     private CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
 
+
+    @EventHandler
+    public void worldChange(PlayerChangedWorldEvent e) {
+
+        if (capeManager.hasCape(e.getPlayer())) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Player player = e.getPlayer();
+                    PlayerCape playerCape = capeManager.getCurrentCape(player);
+
+                    playerCape.getCapeDisplay().setLocation(player.getLocation());
+                    playerCape.respawn(player, player);
+
+                    //spawn for others
+                    playerCape.spawnForOthers(player);
+                }
+            }.runTaskLater(ProdigyCape.getInstance(), 20L);
+        }
+    }
+
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
+        if (!event.getFrom().getWorld().equals(event.getTo().getWorld())) {
+            return;
+        }
         Player player = event.getPlayer();
-        player.sendMessage("Teleport event");
+       if (capeManager.hasCape(player)) {
+           new BukkitRunnable() {
+               @Override
+               public void run() {
+                   PlayerCape playerCape = capeManager.getCurrentCape(player);
+                   playerCape.respawn(player, player);
+               }
+           }.runTaskLater(ProdigyCape.getInstance(), 10L);
 
-
-      /* if (capeManager.hasCape(player)) {
-            PlayerCape playerCape = capeManager.getCurrentCape(player);
-            if (!player.getPassengers().isEmpty()) {
-                player.getPassengers().forEach(player::removePassenger);
-            }
-            playerCape.getCapeDisplay().teleport(event.getTo());
-            player.addPassenger(playerCape.getCapeDisplay());
-            playerCape.realigneCapeRotationToPlayerBodyYaw();
-        }*/
+        }
     }
 }

@@ -130,6 +130,35 @@ public class PlayerCape {
         capeDisplay.despawn(player);
     }
 
+    public void respawn(Player player, Player wearer) {
+        capeDisplay.spawn(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                capeDisplay.mount(player, wearer);
+            }
+        }.runTaskLater(ProdigyCape.getInstance(), 1);
+    }
+
+    public void spawnForOthers(Player player) {
+        if (!spawned) {
+            return;
+        }
+        player.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < 100)
+                .forEach(p -> {
+                    capeDisplay.spawn(p);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            capeDisplay.mount(p, player);
+                        }
+                    }.runTaskLater(ProdigyCape.getInstance(), 1);
+                });
+
+
+    }
+
     private boolean hasElytra() {
         return player.getInventory().getChestplate() != null
                 && player.getInventory().getChestplate().getType() == Material.ELYTRA;
@@ -142,7 +171,7 @@ public class PlayerCape {
             task = null;
         }
         if (capeDisplay != null) {
-            visible(true);
+            capeDisplay.dismount(player);
             capeDisplay.despawn();
             capeDisplay = null;
         }

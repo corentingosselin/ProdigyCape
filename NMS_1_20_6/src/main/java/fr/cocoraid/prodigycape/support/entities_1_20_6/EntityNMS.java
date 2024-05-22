@@ -32,7 +32,6 @@ public abstract class EntityNMS {
     }
 
     public void spawn(Player player) {
-
         Packet spawn = null;
         if (entity instanceof LivingEntity)
             spawn = new ClientboundAddEntityPacket(entity);
@@ -169,4 +168,7 @@ public abstract class EntityNMS {
         }
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
 }

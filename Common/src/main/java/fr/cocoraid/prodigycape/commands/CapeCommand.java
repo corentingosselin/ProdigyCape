@@ -39,6 +39,12 @@ public class CapeCommand extends BaseCommand {
         for (String s : help) {
             player.sendMessage(s);
         }
+
+        if(player.hasPermission("prodigycape.admin")) {
+            player.sendMessage("§e/cape reload §7- §fReload the capes");
+            player.sendMessage("§e/cape sync §7- §fSynchronize the local configuration with the database");
+        }
+
     }
 
     @Syntax("<cape>")

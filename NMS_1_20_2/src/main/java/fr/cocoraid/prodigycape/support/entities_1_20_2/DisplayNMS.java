@@ -67,7 +67,7 @@ public class DisplayNMS extends EntityNMS {
         ServerPlayer serverPlayer = ((CraftPlayer)player).getHandle();
         ClientboundSetPassengersPacket packet = new ClientboundSetPassengersPacket(serverPlayer);
         passengersField.set(packet, new int[]{});
-        NMS.sendPacket(player, packet);
+        NMS.sendPacket(player.getWorld(), packet);
     }
 
 

@@ -3,6 +3,7 @@ package fr.cocoraid.prodigycape.support;
 import fr.cocoraid.prodigycape.IDisplayItem;
 import fr.cocoraid.prodigycape.support.entities_1_20_2.DisplayItemNMS;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
@@ -50,6 +51,17 @@ public class DisplayItem_1_20_2 implements IDisplayItem {
     }
 
     @Override
+    public void dismount(Player player) {
+        displayItemNMS.dismount(player);
+    }
+
+    @Override
+    public void dismount(Player player, Player wearer) {
+        displayItemNMS.dismount(player, wearer);
+    }
+
+
+    @Override
     public Transformation getTransformation() {
         return displayItemNMS.getTransformation();
     }
@@ -57,6 +69,12 @@ public class DisplayItem_1_20_2 implements IDisplayItem {
     @Override
     public int getId() {
         return displayItemNMS.getId();
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        displayItemNMS.setLocation(location);
+        displayItemNMS.setWorld(location.getWorld());
     }
 }
 

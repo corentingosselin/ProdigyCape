@@ -50,8 +50,7 @@ public class Language extends LanguageAbstract {
             "§7- §6/cape help §7: Show this help",
             "§7- §6/cape menu §7: Open the cape menu",
             "§7- §6/cape shop §7: Open the cape shop",
-            "§7- §6/cape apply <cape> §7: Apply a cape",
-            "§7- §6/cape resell <cape> §7: Resell a cape"
+            "§7- §6/cape apply <cape> §7: Apply a cape"
     ));
 
 

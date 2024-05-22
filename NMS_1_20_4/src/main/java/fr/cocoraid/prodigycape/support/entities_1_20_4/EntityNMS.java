@@ -163,4 +163,8 @@ public abstract class EntityNMS {
         }
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
 }
