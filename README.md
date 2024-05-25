@@ -2,7 +2,7 @@
   <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/badge/Minecraft%20version-1.19.4_--_1.20.6-brightgreen.svg" alt="Minecraft version"></a>
   <a href="https://www.spigotmc.org/resources/116899/reviews"><img src="https://img.shields.io/spiget/rating/116899?label=Spigot%20rating" alt="Spigot rating"></a>
   <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/spiget/downloads/116899?label=Spigot%20downloads" alt="Spigot downloads"></a>
-  <img width="1100px" src="https://github.com/max1mde/ProdigyCape/assets/114857048/0dc55096-1f23-4f1c-8ceb-d84af1bb7ea4">
+  <img width="1100px" src="https://github.com/max1mde/ProdigyCape/assets/114857048/5995c074-79df-476e-abaa-0f23eafa740c">
   <h1>Add custom capes to your Minecraft server</h1>
   <h3>Which works even without a mod or resourcepack!</h3>
   <img src="https://github.com/max1mde/ProdigyCape/assets/114857048/40b6942c-4c4a-4736-9db3-1a44868f17a6">
