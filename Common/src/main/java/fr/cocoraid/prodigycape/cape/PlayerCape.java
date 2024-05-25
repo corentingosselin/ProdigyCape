@@ -104,7 +104,7 @@ public class PlayerCape {
 
 
             }
-        }.runTaskTimer(ProdigyCape.getInstance(), 0, 0);
+        }.runTaskTimerAsynchronously(ProdigyCape.getInstance(), 0, 0);
 
         this.spawned = true;
     }
@@ -272,7 +272,12 @@ public class PlayerCape {
     public void visible(boolean visibility) {
         if (visibility) {
             capeDisplay.spawn(player.getLocation(), capeItem);
+            float height = 1.9f;
+            Transformation transformation = capeDisplay.getTransformation();
+            transformation.getScale().set(1.2f, height, 0.08f);
+            capeDisplay.setTransformation(transformation);
             capeDisplay.mount(player);
+
         } else {
             capeDisplay.despawn();
         }
