@@ -7,7 +7,7 @@
     <parent>
         <groupId>fr.cocoraid.prodigycape</groupId>
         <artifactId>ProdigyCape</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>fr.cocoraid.prodigycape</groupId>
             <artifactId>Core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
