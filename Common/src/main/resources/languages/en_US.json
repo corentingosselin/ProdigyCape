@@ -1,0 +1,35 @@
+{
+  "next_button": "&7Next",
+  "previous_button": "&7Previous",
+  "owned_capes_menu_title": "My Capes",
+  "owned_capes_showcase_menu_title": "My Capes",
+  "no_capes_close": "&cSorry, there are no capes here\nClose the inventory",
+  "shop_capes_menu_title": "Official Cape Shop",
+  "equipped": "\n&a&lEquipped",
+  "no_enough_money": "&cYou don't have enough money",
+  "something_wrong": "&cSomething went wrong, please contact an administrator",
+  "cape_resell_not_allowed": "&cCape reselling is not allowed",
+  "confirm": "&aConfirm",
+  "cancel": "&cCancel",
+  "confirmation_menu_title": "Purchase Confirmation",
+  "confirm_purchase": "\n&aConfirm purchase",
+  "click_to_purchase": "\n&aClick to purchase",
+  "price": "&7Price: &6%price",
+  "currency": "$",
+  "no_eco_plugin": "&cNo cape shop available, please contact an administrator",
+  "cape_purchased_and_equipped": "&aCape purchased and now equipped! You can find all your capes by using /cape menu",
+  "sold_out": "&cSold out! Sorry, there are no more capes left for this item",
+  "no_permission": "&cYou don't have permission to do that",
+  "limited_edition": "\n&cLimited Edition: %cape_left_number left",
+  "bought_info": [
+    "&5Edition Number: #&d%edition &5/ %total",
+    "&6Bought for: %price",
+    "&7Purchase Date: %date"
+  ],
+  "help_commands": [
+    "&7- &6/cape help &7: Display this help",
+    "&7- &6/cape menu &7: Open the cape menu",
+    "&7- &6/cape shop &7: Open the cape shop",
+    "&7- &6/cape apply <cape> &7: Apply a cape"
+  ]
+}
