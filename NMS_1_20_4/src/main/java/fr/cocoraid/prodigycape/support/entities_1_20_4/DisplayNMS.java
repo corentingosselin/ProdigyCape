@@ -26,6 +26,13 @@ public class DisplayNMS extends EntityNMS {
 
     }
 
+    public void setInterpolationDuration(Integer duration) {
+        if(duration == null) {
+            display.setTransformationInterpolationDuration(0);
+            return;
+        }
+        display.setTransformationInterpolationDuration(duration);
+    }
 
     public DisplayNMS setViewRange (int viewDistance) {
         display.setViewRange(viewDistance);

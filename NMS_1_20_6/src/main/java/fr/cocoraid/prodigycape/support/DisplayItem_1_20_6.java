@@ -9,17 +9,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 import fr.cocoraid.prodigycape.support.entities_1_20_6.DisplayItemNMS;
 
+import javax.annotation.Nullable;
+
 public class DisplayItem_1_20_6 implements IDisplayItem {
 
     private DisplayItemNMS displayItemNMS;
 
     @Override
-    public void spawn(Location location, ItemStack itemStack) {
+    public void spawn(Location location, ItemStack itemStack, @Nullable Integer interpolationDuration) {
         displayItemNMS = new DisplayItemNMS(location.getWorld());
         displayItemNMS.setLocation(location);
         displayItemNMS.setItemStack(itemStack);
+        displayItemNMS.setInterpolationDuration(interpolationDuration);
         displayItemNMS.spawn();
     }
+
 
     @Override
     public void spawn(Player player) {
