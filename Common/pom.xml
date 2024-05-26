@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <parent>
         <groupId>fr.cocoraid.prodigycape</groupId>
         <artifactId>ProdigyCape</artifactId>
@@ -100,13 +99,6 @@
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
 
         <dependency>
@@ -153,15 +145,6 @@
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>com.github.retrooper.packetevents</groupId>
-            <artifactId>spigot</artifactId>
-            <version>2.3.0</version>
-            <scope>compile</scope>
-        </dependency>
-
 
         <dependency>
             <groupId>org.spigotmc</groupId>

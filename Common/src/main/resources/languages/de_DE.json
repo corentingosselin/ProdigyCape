@@ -1,0 +1,35 @@
+{
+  "next_button": "&7Nächste Seite",
+  "previous_button": "&7Vorherige Seite",
+  "owned_capes_menu_title": "Meine Capes",
+  "owned_capes_showcase_menu_title": "Meine Capes",
+  "no_capes_close": "&cHier gibt es noch keine Capes\nSchließe das Inventar",
+  "shop_capes_menu_title": "Offizieller Cape-Shop",
+  "equipped": "\n&a&lAusgerüstet",
+  "no_enough_money": "&cDu hast nicht genug Geld",
+  "something_wrong": "&cEtwas ist schief gelaufen, bitte kontaktiere einen Administrator",
+  "cape_resell_not_allowed": "&cWiederverkauf von Capes ist nicht erlaubt",
+  "confirm": "&aBestätigen",
+  "cancel": "&cAbbrechen",
+  "confirmation_menu_title": "Kaufbestätigung",
+  "confirm_purchase": "\n&aKauf bestätigen",
+  "click_to_purchase": "\n&aZum Kaufen klicken",
+  "price": "&7Preis: &6%price",
+  "currency": "$",
+  "no_eco_plugin": "&cKein Cape-Shop verfügbar, bitte kontaktiere einen Administrator",
+  "cape_purchased_and_equipped": "&aCape gekauft und jetzt ausgerüstet! Du findest alle deine Capes mit /cape menu",
+  "sold_out": "&cAusverkauft! Tut mir leid, es sind keine Capes mehr für dieses Item übrig",
+  "no_permission": "&cDu hast keine Berechtigung dafür",
+  "limited_edition": "\n&cLimitierte Auflage: %cape_left_number übrig",
+  "bought_info": [
+    "&5Ausgabenummer: #&d%edition &5/ %total",
+    "&6Gekauft für: %price",
+    "&7Kaufdatum: %date"
+  ],
+  "help_commands": [
+    "&7- &6/cape help &7: Zeige diese Hilfe an",
+    "&7- &6/cape menu &7: Öffne das Cape-Menü",
+    "&7- &6/cape shop &7: Öffne den Cape-Shop",
+    "&7- &6/cape apply <cape> &7: Wende ein Cape an"
+  ]
+}
