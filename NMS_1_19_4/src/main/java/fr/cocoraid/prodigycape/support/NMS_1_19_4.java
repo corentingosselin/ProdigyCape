@@ -2,7 +2,6 @@ package fr.cocoraid.prodigycape.support;
 
 
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
-import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,22 +14,6 @@ import java.util.List;
 
 public class NMS_1_19_4 implements fr.cocoraid.prodigycape.NmsHandler {
 
-    @Override
-    public Object clientInfoWithoutCape(Object object) {
-
-        ServerboundClientInformationPacket clientInformation = (ServerboundClientInformationPacket) object;
-        return new ServerboundClientInformationPacket(
-                clientInformation.language(),
-                clientInformation.viewDistance(),
-                clientInformation.chatVisibility(),
-                clientInformation.chatColors(),
-                126,
-                clientInformation.mainHand(),
-                clientInformation.textFilteringEnabled(),
-                clientInformation.allowsListing()
-        );
-
-    }
 
     @Override
     public void removeCape(Player player) {
@@ -42,14 +25,8 @@ public class NMS_1_19_4 implements fr.cocoraid.prodigycape.NmsHandler {
         List<SynchedEntityData.DataValue<?>> eData = new ArrayList<>();
         eData.add(SynchedEntityData.DataValue.create(new EntityDataAccessor<>(17, EntityDataSerializers.BYTE), (byte) 126));
 
-
         ClientboundSetEntityDataPacket meta = new ClientboundSetEntityDataPacket(sp.getId(), eData);
         sp.connection.send(meta);
-    }
-
-    @Override
-    public int getEntityId(Player player) {
-        return ((CraftPlayer) player).getHandle().getId();
     }
 
 

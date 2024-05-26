@@ -35,7 +35,6 @@
             </plugin>
 
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -43,6 +42,9 @@
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
                     </dependencyReducedPomLocation>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <minimizeJar>true</minimizeJar>
+
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -55,6 +57,27 @@
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>fr.cocoraid.locales</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.retrooper</pattern>
+                            <shadedPattern>com.github.retrooper.prodigycape
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>io.github.retrooper</pattern>
+                            <shadedPattern>io.github.retrooper.prodigycape
+                            </shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>com.github.retrooper.prodigycape.packetevents.libs.net.kyori
+                            </shadedPattern>
+                        </relocation>
+
+                        <relocation>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>com.github.retrooper.prodigycape.packetevents.libs.com.google.gson
+                            </shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -76,6 +99,13 @@
             </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
 
@@ -102,7 +132,6 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>fr.cocoraid.prodigycape</groupId>
             <artifactId>NMS_1_20_2</artifactId>
@@ -126,6 +155,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>com.github.retrooper.packetevents</groupId>
+            <artifactId>spigot</artifactId>
+            <version>2.3.0</version>
+            <scope>compile</scope>
+        </dependency>
 
 
         <dependency>
@@ -163,12 +198,7 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>5.1.0</version>
-            <scope>provided</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>com.zaxxer</groupId>
