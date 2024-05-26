@@ -2,15 +2,21 @@
   <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/badge/Minecraft%20version-1.19.4_--_1.20.6-brightgreen.svg" alt="Minecraft version"></a>
   <a href="https://www.spigotmc.org/resources/116899/reviews"><img src="https://img.shields.io/spiget/rating/116899?label=Spigot%20rating" alt="Spigot rating"></a>
   <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/spiget/downloads/116899?label=Spigot%20downloads" alt="Spigot downloads"></a>
+  <a href="https://www.paypal.com/donate/?hosted_button_id=56KN7WE2G324C"><img src="https://img.shields.io/badge/Donate-PayPal-blue.svg" alt="Minecraft version"></a>
   <img width="1000px" src="https://github.com/max1mde/ProdigyCape/assets/114857048/1f06b099-42ec-4f9c-9ea9-e6bd669ba4c9">
   <h1>Add custom capes to your Minecraft server</h1>
   <h3>Which works even without a mod or resourcepack!</h3>
   <img src="https://github.com/max1mde/ProdigyCape/assets/114857048/40b6942c-4c4a-4736-9db3-1a44868f17a6">
 </div>
 
+> [!CAUTION]
+> The Mojang EULA does not allow to sell capes! We are not responsible for your actions!
 
-**ProtocolLib required!**
-https://www.spigotmc.org/resources/protocollib.1997/
+> [!IMPORTANT]  
+> **ProtocolLib is currently required as a dependency!**
+> https://www.spigotmc.org/resources/protocollib.1997/  
+> Also add [Vault](https://www.spigotmc.org/resources/vault.34315/) if you want to use the shop system
+
 
 ## Example config
 ```yml
@@ -57,3 +63,9 @@ All cape: prodigy.cape.*
 Bypass disabled cape to apply:
 prodigy.cape.bypass
 ```
+
+# TO-DO List
+
+- [ ] Full packet events implementation (No NMS anymore)
+- [ ] Better cape physics
+- [ ] Java API for developers
