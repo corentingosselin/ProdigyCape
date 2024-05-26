@@ -35,7 +35,6 @@
             </plugin>
 
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -131,7 +130,6 @@
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
 
 
         <dependency>

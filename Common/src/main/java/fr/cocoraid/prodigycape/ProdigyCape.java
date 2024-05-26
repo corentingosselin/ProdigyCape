@@ -46,8 +46,7 @@ public final class ProdigyCape extends JavaPlugin {
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-        //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
+        PacketEvents.getAPI().getSettings().reEncodeByDefault(false) // read only ?
                 .checkForUpdates(true)
                 .bStats(false);
         PacketEvents.getAPI().load();
