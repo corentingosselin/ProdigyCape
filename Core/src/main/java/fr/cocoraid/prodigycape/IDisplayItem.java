@@ -6,9 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
+import javax.annotation.Nullable;
+
 public interface IDisplayItem {
 
-    void spawn(Location location, ItemStack itemStack);
+    void spawn(Location location, ItemStack itemStack, @Nullable Integer interpolationDuration);
     void spawn(Player player);
     void despawn();
     void despawn(Player player);

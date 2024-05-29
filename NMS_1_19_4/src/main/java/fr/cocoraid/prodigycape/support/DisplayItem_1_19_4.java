@@ -8,14 +8,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
+import javax.annotation.Nullable;
+
 public class DisplayItem_1_19_4 implements IDisplayItem {
 
     private DisplayItemNMS displayItemNMS;
 
     @Override
-    public void spawn(Location location, ItemStack itemStack) {
+    public void spawn(Location location, ItemStack itemStack, @Nullable Integer interpolationDuration) {
         displayItemNMS = new DisplayItemNMS(location.getWorld());
         displayItemNMS.setLocation(location);
+        displayItemNMS.setInterpolationDuration(interpolationDuration);
         displayItemNMS.setItemStack(itemStack);
         displayItemNMS.spawn();
     }

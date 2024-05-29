@@ -66,7 +66,7 @@ public class PlayerCape {
         }
 
         capeDisplay = NmsHandlerFactory.getDisplayItem();
-        capeDisplay.spawn(player.getLocation(), capeItem);
+        capeDisplay.spawn(player.getLocation(), capeItem, 20);
 
         float height = 1.9f;
         Transformation transformation = capeDisplay.getTransformation();
@@ -271,7 +271,7 @@ public class PlayerCape {
 
     public void visible(boolean visibility) {
         if (visibility) {
-            capeDisplay.spawn(player.getLocation(), capeItem);
+            capeDisplay.spawn(player.getLocation(), capeItem, 0);
             float height = 1.9f;
             Transformation transformation = capeDisplay.getTransformation();
             transformation.getScale().set(1.2f, height, 0.08f);
