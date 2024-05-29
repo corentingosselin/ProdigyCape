@@ -11,6 +11,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSettings;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.cape.PlayerCape;
@@ -24,7 +25,6 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class PacketEventsListener extends SimplePacketListenerAbstract {
 
@@ -54,7 +54,6 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         switch (event.getPacketType()) {
             case SPAWN_PLAYER, SPAWN_ENTITY -> handleSpawnPlayer(event, player);
             case DESTROY_ENTITIES -> handleDestroyEntities(event, player);
-            case SET_PASSENGERS -> handleSetPassengers(event, player);
         }
     }
 
@@ -137,7 +136,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
 
         WrapperPlayServerDestroyEntities packet = new WrapperPlayServerDestroyEntities(event);
         int[] entities = packet.getEntityIds();
-        List<Integer> list = Arrays.stream(entities).boxed().collect(Collectors.toList());
+        List<Integer> list = Arrays.stream(entities).boxed().toList();
 
         prodigyManager.getProdigyPlayers().keySet().forEach(uuid -> {
             Player target = Bukkit.getPlayer(uuid);
@@ -151,30 +150,6 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
                 playerCape.despawnForPlayer(player);
             }
         });
-    }
-
-    private void handleSetPassengers(PacketPlaySendEvent event, Player player) {
-        WrapperPlayServerSetPassengers packet = new WrapperPlayServerSetPassengers(event);
-
-        int[] entities = packet.getPassengers();
-        PlayerCape playerCape = capeManager.getCurrentCape(player);
-        if (playerCape == null) return;
-
-        if (entities.length == 0) {
-            packet.setPassengers(new int[]{playerCape.getCapeDisplay().getId()});
-            return;
-        }
-
-        int capeId = playerCape.getCapeDisplay().getId();
-        if (entities.length == 1) {
-            int potentialCapeId = entities[0];
-            if (potentialCapeId == capeId) return;
-        }
-
-        int[] newEntities = new int[entities.length + 1];
-        newEntities[0] = capeId;
-        System.arraycopy(entities, 0, newEntities, 1, entities.length);
-        packet.setPassengers(newEntities);
     }
 
     private PlayerCape getPlayerCape(Player player) {

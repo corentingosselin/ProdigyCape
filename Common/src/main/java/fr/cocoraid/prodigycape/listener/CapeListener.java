@@ -16,48 +16,6 @@ public class CapeListener implements Listener {
 
     private CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
 
-
-    @EventHandler
-    public void moveEvent(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
-        UUID playerId = player.getUniqueId();
-
-        if (!capeManager.hasCape(player)) {
-            return;
-        }
-
-        PlayerCape playerCape = capeManager.getCurrentCape(player);
-        if(!playerCape.isVisible()) return;
-        if (playerCape.getCapeDisplay() == null) return;
-
-        Location to = e.getTo();
-        Location from = e.getFrom();
-
-        if (to == null || from == null) return; // Ensure we have valid locations
-
-        float lastReceivedRawYaw = playerCape.getLastBodyYaw();
-        float bodyYaw = playerCape.getCurrentBodyYaw();
-
-        // Check for any rotation or movement
-       /*  boolean hasRotated = from.getYaw() != to.getYaw();
-        boolean hasMoved = from.getX() != to.getX() || from.getZ() != to.getZ();
-        if (hasMoved || hasRotated) {
-            // Calculate the new body yaw when there's significant rotation or movement
-            float calculatedBodyYaw = calculateBodyYaw(player, from, to, lastReceivedRawYaw, bodyYaw);
-
-            // Update the stored body yaw and the last yaw observed
-            playerCape.setCurrentBodyYaw(calculatedBodyYaw);
-
-            float calculatedSpeed = (float) Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + Math.pow(to.getZ() - from.getZ(), 2));
-            playerCape.setCurrentSpeed(calculatedSpeed);
-            playerCape.update(calculatedBodyYaw);
-        }
-
-        // Always update lastYaw with the current yaw to capture orientation changes
-        playerCape.setLastBodyYaw(to.getYaw()); */
-    }
-
-
     @EventHandler
     public void sneak(PlayerToggleSneakEvent e) {
         Player player = e.getPlayer();
