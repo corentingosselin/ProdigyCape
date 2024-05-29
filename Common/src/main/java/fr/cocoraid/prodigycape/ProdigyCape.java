@@ -4,6 +4,7 @@ import co.aikar.commands.CommandReplacements;
 import co.aikar.commands.PaperCommandManager;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.manager.player.PlayerManager;
 import fr.cocoraid.prodigycape.commands.CapeCommand;
 import fr.cocoraid.prodigycape.commands.CapeCompletion;
 import fr.cocoraid.prodigycape.commands.CapeContext;
@@ -22,6 +23,9 @@ import fr.cocoraid.prodigycape.manager.ProdigyManager;
 import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.depends.minuskube.inv.InventoryManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import me.tofaa.entitylib.APIConfig;
+import me.tofaa.entitylib.EntityLib;
+import me.tofaa.entitylib.spigot.SpigotEntityLibPlatform;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +47,9 @@ public final class ProdigyCape extends JavaPlugin {
     private DatabaseManager databaseManager;
     private Configuration configuration;
 
+    private PlayerManager playerManager;
+
+
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
@@ -50,6 +57,8 @@ public final class ProdigyCape extends JavaPlugin {
                 .checkForUpdates(true)
                 .bStats(false);
         PacketEvents.getAPI().load();
+
+
     }
 
     @Override
@@ -94,6 +103,18 @@ public final class ProdigyCape extends JavaPlugin {
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener(this));
         PacketEvents.getAPI().init();
+        this.playerManager = PacketEvents.getAPI().getPlayerManager();
+
+
+        SpigotEntityLibPlatform platform = new SpigotEntityLibPlatform(this);
+
+        APIConfig settings = new APIConfig(PacketEvents.getAPI())
+                .debugMode()
+                .tickTickables()
+                .trackPlatformEntities()
+                .usePlatformLogger();
+
+        EntityLib.init(platform, settings);
 
     }
 
@@ -179,5 +200,9 @@ public final class ProdigyCape extends JavaPlugin {
 
     public NmsHandler getNmsHandler() {
         return nmsHandler;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
     }
 }

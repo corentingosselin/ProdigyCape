@@ -3,6 +3,7 @@ package fr.cocoraid.prodigycape.listener;
 import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.cape.PlayerCape;
 import fr.cocoraid.prodigycape.manager.CapeManager;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,7 +26,7 @@ public class TeleportListener implements Listener {
                     Player player = e.getPlayer();
                     PlayerCape playerCape = capeManager.getCurrentCape(player);
 
-                    playerCape.getCapeDisplay().setLocation(player.getLocation());
+                    playerCape.getCapeDisplay().setLocation(SpigotConversionUtil.fromBukkitLocation(player.getLocation()));
                     playerCape.respawn(player, player);
 
                     //spawn for others

@@ -1,24 +1,45 @@
 package fr.cocoraid.prodigycape.cape;
 
-import fr.cocoraid.prodigycape.IDisplayItem;
+import com.github.retrooper.packetevents.manager.player.PlayerManager;
+
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.util.Quaternion4f;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
+import com.maximde.passengerapi.PassengerAPI;
+import com.maximde.passengerapi.PassengerActions;
+
 import fr.cocoraid.prodigycape.ProdigyCape;
-import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
+
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
 import fr.cocoraid.prodigycape.utils.VersionChecker;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
+import me.tofaa.entitylib.EntityLib;
+import me.tofaa.entitylib.meta.display.ItemDisplayMeta;
+import me.tofaa.entitylib.meta.types.DisplayMeta;
+import me.tofaa.entitylib.wrapper.WrapperEntity;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Transformation;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.Optional;
+
 public class PlayerCape {
 
+
     private static ProdigyCape instance = ProdigyCape.getInstance();
+    private static PassengerActions passengerActions = PassengerAPI.getAPI(instance);
+    private static PlayerManager playerManager = instance.getPlayerManager();
+
 
     private float Y_OFFSET_TRANSLATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1) ? 0.0f : -0.4f;
     private static int INVERT_BACKWARD_FACTOR = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? -1 : 1;
@@ -32,7 +53,7 @@ public class PlayerCape {
     private boolean spawned = false;
 
     private ItemStack capeItem;
-    private IDisplayItem capeDisplay;
+    private WrapperEntity capeDisplay;
     private Player player;
     private Cape cape;
 
@@ -52,6 +73,21 @@ public class PlayerCape {
         this.capeItem = new ItemEditor(Material.PLAYER_HEAD).setTexture(cape.getTexture()).getItem();
     }
 
+    public void forceSpawn(Player player) {
+        player.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
+                ).forEach(p -> {
+                    capeDisplay.addViewer(p.getUniqueId());
+                });
+        ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
+        meta.setItem(SpigotConversionUtil.fromBukkitItemStack(capeItem));
+        float height = 1.9f;
+        meta.setScale(new com.github.retrooper.packetevents.util.Vector3f(1.2f, height, 0.08f));
+        capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(player.getLocation()));
+        passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
+
+    }
+
     public void spawn(Player player) {
         if (spawned) {
             return;
@@ -61,18 +97,7 @@ public class PlayerCape {
         this.lastBodyYaw = player.getLocation().getYaw();
         this.currentBodyYaw = player.getLocation().getYaw();
 
-        if (!player.getPassengers().isEmpty()) {
-            player.getPassengers().forEach(player::removePassenger);
-        }
-
-        capeDisplay = NmsHandlerFactory.getDisplayItem();
-        capeDisplay.spawn(player.getLocation(), capeItem);
-
-        float height = 1.9f;
-        Transformation transformation = capeDisplay.getTransformation();
-        transformation.getScale().set(1.2f, height, 0.08f);
-        capeDisplay.setTransformation(transformation);
-        capeDisplay.mount(player);
+       forceSpawn(player);
 
         task = new BukkitRunnable() {
 
@@ -113,29 +138,33 @@ public class PlayerCape {
         if (!spawned) {
             return;
         }
-        this.capeDisplay.spawn(player);
-        //this.capeDisplay.setLocation(wearer.getLocation());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                capeDisplay.mount(player, wearer);
-            }
-        }.runTaskLater(ProdigyCape.getInstance(), 1);
+
+        respawn(player, wearer);
     }
 
     public void despawnForPlayer(Player player) {
         if (!spawned) {
             return;
         }
-        capeDisplay.despawn(player);
+        WrapperPlayServerDestroyEntities destroyEntities = new WrapperPlayServerDestroyEntities(new int[]{capeDisplay.getEntityId()});
+        playerManager.sendPacket(player, destroyEntities);
     }
 
     public void respawn(Player player, Player wearer) {
-        capeDisplay.spawn(player);
+        WrapperPlayServerSpawnEntity spawnEntity = new WrapperPlayServerSpawnEntity(
+                capeDisplay.getEntityId(),
+                capeDisplay.getUuid(),
+                capeDisplay.getEntityType(),
+                capeDisplay.getLocation(),
+                capeDisplay.getYaw(),
+                0,
+                null);
+        playerManager.sendPacket(player, spawnEntity);
         new BukkitRunnable() {
             @Override
             public void run() {
-                capeDisplay.mount(player, wearer);
+                WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(capeDisplay.getEntityId(), new int[]{wearer.getEntityId()});
+                playerManager.sendPacket(player, setPassengers);
             }
         }.runTaskLater(ProdigyCape.getInstance(), 1);
     }
@@ -147,15 +176,8 @@ public class PlayerCape {
         player.getWorld().getPlayers().stream()
                 .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < 100)
                 .forEach(p -> {
-                    capeDisplay.spawn(p);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            capeDisplay.mount(p, player);
-                        }
-                    }.runTaskLater(ProdigyCape.getInstance(), 1);
+                    respawn(p, player);
                 });
-
 
     }
 
@@ -171,7 +193,6 @@ public class PlayerCape {
             task = null;
         }
         if (capeDisplay != null) {
-            capeDisplay.dismount(player);
             capeDisplay.despawn();
             capeDisplay = null;
         }
@@ -219,11 +240,10 @@ public class PlayerCape {
         Vector3f translationVector = new Vector3f(0, Y_OFFSET_TRANSLATION, 0).add(backwardOffset);
 
         // Update cape's transformation with the new rotation and adjusted translation
-        Transformation transformation = capeDisplay.getTransformation();
-        transformation.getLeftRotation().set(combinedRotation); // Apply combined rotation
-        transformation.getTranslation().set(translationVector); // Set the adjusted translation vector
 
-        capeDisplay.setTransformation(transformation);
+        DisplayMeta meta = (DisplayMeta) capeDisplay.getEntityMeta();
+        meta.setLeftRotation(new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w));
+        meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
     }
 
 
@@ -265,19 +285,13 @@ public class PlayerCape {
         return cape;
     }
 
-    public IDisplayItem getCapeDisplay() {
+    public WrapperEntity getCapeDisplay() {
         return capeDisplay;
     }
 
     public void visible(boolean visibility) {
         if (visibility) {
-            capeDisplay.spawn(player.getLocation(), capeItem);
-            float height = 1.9f;
-            Transformation transformation = capeDisplay.getTransformation();
-            transformation.getScale().set(1.2f, height, 0.08f);
-            capeDisplay.setTransformation(transformation);
-            capeDisplay.mount(player);
-
+            forceSpawn(player);
         } else {
             capeDisplay.despawn();
         }
