@@ -18,7 +18,6 @@ import fr.cocoraid.prodigycape.utils.VersionChecker;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.meta.display.ItemDisplayMeta;
-import me.tofaa.entitylib.meta.types.DisplayMeta;
 import me.tofaa.entitylib.wrapper.WrapperEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,13 +30,11 @@ import org.bukkit.scheduler.BukkitTask;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.Optional;
-
 public class PlayerCape {
 
 
     private static ProdigyCape instance = ProdigyCape.getInstance();
-    private static PassengerActions passengerActions = PassengerAPI.getAPI(instance);
+    private static PassengerActions passengerActions = instance.getPassengerActions();
     private static PlayerManager playerManager = instance.getPlayerManager();
 
 
@@ -97,6 +94,7 @@ public class PlayerCape {
         this.lastBodyYaw = player.getLocation().getYaw();
         this.currentBodyYaw = player.getLocation().getYaw();
 
+        capeDisplay = EntityLib.getApi().createEntity(EntityTypes.ITEM_DISPLAY);
        forceSpawn(player);
 
         task = new BukkitRunnable() {
@@ -241,7 +239,7 @@ public class PlayerCape {
 
         // Update cape's transformation with the new rotation and adjusted translation
 
-        DisplayMeta meta = (DisplayMeta) capeDisplay.getEntityMeta();
+        ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
         meta.setLeftRotation(new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w));
         meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
     }

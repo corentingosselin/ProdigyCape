@@ -10,7 +10,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSettings;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import fr.cocoraid.prodigycape.ProdigyCape;
@@ -24,6 +23,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PacketEventsListener extends SimplePacketListenerAbstract {
@@ -52,7 +52,8 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         Player player = (Player) event.getPlayer();
         if (player == null) return;
         switch (event.getPacketType()) {
-            case SPAWN_PLAYER, SPAWN_ENTITY -> handleSpawnPlayer(event, player);
+            case SPAWN_PLAYER -> handleSpawnPlayer(event, player);
+            case SPAWN_ENTITY -> handleSpawnEntity(event,player);
             case DESTROY_ENTITIES -> handleDestroyEntities(event, player);
         }
     }
@@ -122,6 +123,20 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         WrapperPlayServerSpawnPlayer packet = new WrapperPlayServerSpawnPlayer(event);
         UUID uuid = packet.getUUID();
         Player target = Bukkit.getPlayer(uuid);
+        if (target == null) return;
+
+        PlayerCape playerCape = capeManager.getCurrentCape(target);
+        if (playerCape == null) return;
+
+        playerCape.spawnForPlayer(player, target);
+    }
+
+    private void handleSpawnEntity(PacketPlaySendEvent event, Player player) {
+        WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(event);
+        Optional<UUID> optionalUUID = packet.getUUID();
+        if(optionalUUID.isEmpty()) return;
+
+        Player target = Bukkit.getPlayer(optionalUUID.get());
         if (target == null) return;
 
         PlayerCape playerCape = capeManager.getCurrentCape(target);
