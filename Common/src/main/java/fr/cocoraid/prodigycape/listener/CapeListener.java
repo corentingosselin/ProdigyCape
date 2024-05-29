@@ -39,7 +39,7 @@ public class CapeListener implements Listener {
         float bodyYaw = playerCape.getCurrentBodyYaw();
 
         // Check for any rotation or movement
-        boolean hasRotated = from.getYaw() != to.getYaw();
+       /*  boolean hasRotated = from.getYaw() != to.getYaw();
         boolean hasMoved = from.getX() != to.getX() || from.getZ() != to.getZ();
         if (hasMoved || hasRotated) {
             // Calculate the new body yaw when there's significant rotation or movement
@@ -54,7 +54,7 @@ public class CapeListener implements Listener {
         }
 
         // Always update lastYaw with the current yaw to capture orientation changes
-        playerCape.setLastBodyYaw(to.getYaw());
+        playerCape.setLastBodyYaw(to.getYaw()); */
     }
 
 
