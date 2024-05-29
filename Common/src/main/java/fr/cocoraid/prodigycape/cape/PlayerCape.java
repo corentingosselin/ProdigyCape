@@ -6,6 +6,7 @@ import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
 import fr.cocoraid.prodigycape.utils.VersionChecker;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,13 +20,11 @@ public class PlayerCape {
 
     private static ProdigyCape instance = ProdigyCape.getInstance();
 
-
     private float Y_OFFSET_TRANSLATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1) ? 0.0f : -0.4f;
     private static int INVERT_BACKWARD_FACTOR = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? -1 : 1;
     private float Y_ROTATION_OFFSET = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? 180 : 0f;
     private static final float ROTATION_INTERPOLATION_SPEED = 0.15f;
     private static float DEFAULT_CAPE_X_ROTATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? 0F : 10F;
-
 
     private BukkitTask task;
 
@@ -45,6 +44,7 @@ public class PlayerCape {
     private float lastBodyYaw = 0.0f;
     private float currentBodyYaw = 0.0f;
     private float targetCapeXRotation = DEFAULT_CAPE_X_ROTATION;
+    private Location lastPosition;
 
 
     public PlayerCape(Cape cape) {
@@ -282,6 +282,14 @@ public class PlayerCape {
             capeDisplay.despawn();
         }
         this.visible = visibility;
+    }
+
+    public void setLastPosition(Location lastPosition) {
+        this.lastPosition = lastPosition;
+    }
+
+    public Location getLastPosition() {
+        return lastPosition;
     }
 
     public boolean isVisible() {

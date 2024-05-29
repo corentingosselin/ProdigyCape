@@ -34,7 +34,6 @@
                 </configuration>
             </plugin>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -57,27 +56,6 @@
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>fr.cocoraid.locales</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.github.retrooper</pattern>
-                            <shadedPattern>com.github.retrooper.prodigycape
-                            </shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>io.github.retrooper</pattern>
-                            <shadedPattern>io.github.retrooper.prodigycape
-                            </shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>net.kyori</pattern>
-                            <shadedPattern>com.github.retrooper.prodigycape.packetevents.libs.net.kyori
-                            </shadedPattern>
-                        </relocation>
-
-                        <relocation>
-                            <pattern>com.google.gson</pattern>
-                            <shadedPattern>com.github.retrooper.prodigycape.packetevents.libs.com.google.gson
-                            </shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
