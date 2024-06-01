@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.manager.player.PlayerManager;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.util.Quaternion4f;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.maximde.passengerapi.PassengerAPI;
@@ -19,6 +20,8 @@ import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.meta.display.ItemDisplayMeta;
 import me.tofaa.entitylib.wrapper.WrapperEntity;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -240,8 +243,17 @@ public class PlayerCape {
         // Update cape's transformation with the new rotation and adjusted translation
 
         ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
-        meta.setLeftRotation(new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w));
+        meta.setNotifyAboutChanges(false);
+        Quaternion4f quaternion4f = new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + bodyYaw + " x: " + translationVector.x + " y: " + translationVector.y + " z: " + translationVector.z));
+        meta.setLeftRotation(quaternion4f);
         meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
+        WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
+        player.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
+                ).forEach(p -> {
+                    playerManager.sendPacket(p, metadata);
+                });
     }
 
 
