@@ -245,7 +245,20 @@ public class PlayerCape {
         ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
         meta.setNotifyAboutChanges(false);
         Quaternion4f quaternion4f = new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w);
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + bodyYaw + " x: " + translationVector.x + " y: " + translationVector.y + " z: " + translationVector.z));
+
+
+        float trsX = (float) Math.round(translationVector.x * 100) / 100;
+        float trsY = (float) Math.round(translationVector.y * 100) / 100;
+        float trsZ = (float) Math.round(translationVector.z * 100) / 100;
+
+        float rotX = (float) Math.round(quaternion4f.getX() * 100) / 100;
+        float rotY = (float) Math.round(quaternion4f.getY() * 100) / 100;
+        float rotZ = (float) Math.round(quaternion4f.getZ() * 100) / 100;
+        float w = (float) Math.round(quaternion4f.getW() * 100) / 100;
+
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + bodyYaw + "trans:" + trsX + "-" + trsY + "-" + trsZ + " rot:" + rotX + "-" + rotY + "-" + rotZ + "-w " + w));
+
         meta.setLeftRotation(quaternion4f);
         meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
         WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
