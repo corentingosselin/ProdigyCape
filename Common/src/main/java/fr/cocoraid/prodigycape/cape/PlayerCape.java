@@ -255,9 +255,10 @@ public class PlayerCape {
         float rotY = (float) Math.round(quaternion4f.getY() * 100) / 100;
         float rotZ = (float) Math.round(quaternion4f.getZ() * 100) / 100;
         float w = (float) Math.round(quaternion4f.getW() * 100) / 100;
+        float yaw = (float) Math.round(bodyYaw * 100) / 100;
 
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + bodyYaw + "trans:" + trsX + "-" + trsY + "-" + trsZ + " rot:" + rotX + "-" + rotY + "-" + rotZ + "-w " + w));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + yaw + " trans:" + trsX + ":" + trsY + ":" + trsZ + " rot: " + rotX + ":" + rotY + ":" + rotZ + " w: " + w));
 
         meta.setLeftRotation(quaternion4f);
         meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
