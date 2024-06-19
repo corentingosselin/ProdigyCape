@@ -1,0 +1,35 @@
+{
+  "next_button": "&7下一页",
+  "previous_button": "&7上一页",
+  "owned_capes_menu_title": "我的披风",
+  "owned_capes_showcase_menu_title": "我的皮肤",
+  "no_capes_close": "&c这里没有披风，抱歉\n关闭界面",
+  "shop_capes_menu_title": "官方披风商店",
+  "equipped": "\n&a&l已装备",
+  "no_enough_money": "&c你没有足够的钱",
+  "something_wrong": "&c出现未知错误，请联系服务器管理员",
+  "cape_resell_not_allowed": "&c不允许二次出售披风",
+  "confirm": "&a确认",
+  "cancel": "&c取消",
+  "confirmation_menu_title": "确认购买",
+  "confirm_purchase": "\n&a确认购买",
+  "click_to_purchase": "\n&a点击购买",
+  "price": "&7价格: &6%price",
+  "currency": "$",
+  "no_eco_plugin": "&c无披风可购买，请联系管理员添加",
+  "cape_purchased_and_equipped": "&a披风购买成功，已自动装备！可以使用命令 /cape menu 浏览你拥有的所有披风。",
+  "sold_out": "&c卖光了！抱歉，这个物品没有更多的披风余量了。",
+  "no_permission": "&c你没有权限这么做",
+  "limited_edition": "\n&c限量发售: 剩余 %cape_left_number 份",
+  "bought_info": [
+    "&5限量版序号: #&d%edition &5/ %total",
+    "&6购买价格: %price",
+    "&7购买日期: %date"
+  ],
+  "help_commands": [
+    "&7- &6/cape help &7: 显示帮助页面",
+    "&7- &6/cape menu &7: 显示披风界面",
+    "&7- &6/cape shop &7: 打开披风上帝那",
+    "&7- &6/cape apply <披风名称> &7: 使用披风"
+  ]
+}
