@@ -1,11 +1,14 @@
 package fr.cocoraid.prodigycape.cape;
 
+import com.github.retrooper.packetevents.protocol.player.User;
 import fr.cocoraid.prodigycape.IDisplayItem;
 import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
 import fr.cocoraid.prodigycape.utils.VersionChecker;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
+import io.github.retrooper.packetevents.util.viaversion.ViaVersionUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -216,6 +219,11 @@ public class PlayerCape {
         backwardOffset.rotateY(yawRadians);
 
         // Now, apply this rotated offset to the translation vector.
+
+       // if(ViaVersionUtil.isAvailable()) {
+         //   int version = ViaVersionUtil.getProtocolVersion(player);
+          // player.sendMessage("Version: " + version);
+      //  }
         Vector3f translationVector = new Vector3f(0, Y_OFFSET_TRANSLATION, 0).add(backwardOffset);
 
         // Update cape's transformation with the new rotation and adjusted translation
