@@ -83,7 +83,10 @@ public class PlayerCape {
         meta.setItem(SpigotConversionUtil.fromBukkitItemStack(capeItem));
         float height = 1.9f;
         meta.setScale(new com.github.retrooper.packetevents.util.Vector3f(1.2f, height, 0.08f));
-        capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(player.getLocation()));
+        Location l = player.getLocation();
+        l.setYaw(0);
+        l.setPitch(0);
+        capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(l));
         passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
 
     }
@@ -98,7 +101,7 @@ public class PlayerCape {
         this.currentBodyYaw = player.getLocation().getYaw();
 
         capeDisplay = EntityLib.getApi().createEntity(EntityTypes.ITEM_DISPLAY);
-       forceSpawn(player);
+        forceSpawn(player);
 
         task = new BukkitRunnable() {
 
@@ -152,12 +155,15 @@ public class PlayerCape {
     }
 
     public void respawn(Player player, Player wearer) {
+        com.github.retrooper.packetevents.protocol.world.Location l = capeDisplay.getLocation();
+        l.setYaw(0);
+        l.setPitch(0);
         WrapperPlayServerSpawnEntity spawnEntity = new WrapperPlayServerSpawnEntity(
                 capeDisplay.getEntityId(),
                 capeDisplay.getUuid(),
                 capeDisplay.getEntityType(),
-                capeDisplay.getLocation(),
-                capeDisplay.getYaw(),
+                l,
+                0,
                 0,
                 null);
         playerManager.sendPacket(player, spawnEntity);

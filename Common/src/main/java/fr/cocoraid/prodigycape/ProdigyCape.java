@@ -22,7 +22,6 @@ import fr.cocoraid.prodigycape.listener.TeleportListener;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.manager.ProdigyManager;
 
-import fr.cocoraid.prodigycape.nms.NmsHandlerFactory;
 import fr.depends.minuskube.inv.InventoryManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import me.tofaa.entitylib.APIConfig;
@@ -34,8 +33,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Locale;
 
 public final class ProdigyCape extends JavaPlugin {
-
-    private NmsHandler nmsHandler;
 
     private static InventoryManager invManager;
 
@@ -67,8 +64,6 @@ public final class ProdigyCape extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        this.nmsHandler = NmsHandlerFactory.getHandler();
 
         this.configuration = new Configuration(this);
         configuration.load();
@@ -200,10 +195,6 @@ public final class ProdigyCape extends JavaPlugin {
 
     public EconomyManager getEconomyManager() {
         return economyManager;
-    }
-
-    public NmsHandler getNmsHandler() {
-        return nmsHandler;
     }
 
     public PlayerManager getPlayerManager() {

@@ -31,7 +31,7 @@ public class JoinQuitListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        instance.getNmsHandler().removeCape(player);
+        //instance.getNmsHandler().removeCape(player);
 
         Cape contributorCape = capeManager.getCapeContributors().getCape(player.getUniqueId());
         if (contributorCape != null && !capeManager.hasCape(player)) {
