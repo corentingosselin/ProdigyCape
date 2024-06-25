@@ -2,6 +2,10 @@ package fr.cocoraid.prodigycape.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.github.retrooper.packetevents.manager.player.PlayerManager;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import fr.cocoraid.prodigycape.cape.Cape;
 import fr.cocoraid.prodigycape.database.Database;
 import fr.cocoraid.prodigycape.database.SyncronizableDatabase;
@@ -24,11 +28,13 @@ public class CapeCommand extends BaseCommand {
     private final ProdigyCape instance;
     private final CapeManager capeManager;
     private final LanguageManager languageManager;
+    private final PlayerManager playerManager;
 
     public CapeCommand(ProdigyCape instance) {
         this.instance = instance;
         this.capeManager = instance.getCapeManager();
         this.languageManager = instance.getLanguageManager();
+        this.playerManager = instance.getPlayerManager();
     }
 
     @Default
@@ -46,6 +52,20 @@ public class CapeCommand extends BaseCommand {
         }
 
     }
+
+    boolean toggleCape = false;
+
+    @CommandPermission("prodigycape.admin")
+    @Subcommand("test")
+    public void onCapeTest(Player player) {
+        byte isCape = (byte) (toggleCape ? 126 : 127);
+        EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte)isCape);
+        WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
+        playerManager.sendPacket(player, metadata);
+        toggleCape = !toggleCape;
+        player.sendMessage("§aCape toggled to " + (toggleCape ? "ON" : "OFF"));
+    }
+
 
     @Syntax("<cape>")
     @CommandCompletion("@capes")
@@ -99,13 +119,6 @@ public class CapeCommand extends BaseCommand {
         }
     }
 
-
-
-    @CommandPermission("prodigycape.admin")
-    @Subcommand("test")
-    public void onCapeTest(Player player) {
-        player.sendMessage("§aNothing to test right now, nice try ;) Don't worry this is admin command only");
-    }
 
 
 

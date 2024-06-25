@@ -1,6 +1,11 @@
 package fr.cocoraid.prodigycape.listener;
 
 
+import com.github.retrooper.packetevents.manager.player.PlayerManager;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityMetadataProvider;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import fr.cocoraid.prodigycape.cape.Cape;
 import fr.cocoraid.prodigycape.database.DatabaseManager;
 import fr.cocoraid.prodigycape.manager.CapeManager;
@@ -11,6 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class JoinQuitListener implements Listener {
@@ -18,20 +27,28 @@ public class JoinQuitListener implements Listener {
     private ProdigyCape instance;
     private CapeManager capeManager;
     private DatabaseManager databaseManager;
+    private PlayerManager playerManager;
 
     public JoinQuitListener(ProdigyCape instance) {
         this.instance = instance;
         this.capeManager = instance.getCapeManager();
         this.databaseManager = instance.getDatabaseManager();
+        this.playerManager = instance.getPlayerManager();
     }
-
 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        //instance.getNmsHandler().removeCape(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte)126);
+                WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
+                playerManager.sendPacket(player, metadata);
+            }
+        }.runTaskLaterAsynchronously(instance, 10L);
 
         Cape contributorCape = capeManager.getCapeContributors().getCape(player.getUniqueId());
         if (contributorCape != null && !capeManager.hasCape(player)) {

@@ -90,6 +90,9 @@ public class PlayerCape {
         l.setYaw(0);
         l.setPitch(0);
         capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(l));
+        //working as well
+        //WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(player.getEntityId(), new int[]{capeDisplay.getEntityId()});
+        //playerManager.sendPacket(player, setPassengers);
         passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
 
     }
@@ -173,7 +176,7 @@ public class PlayerCape {
         new BukkitRunnable() {
             @Override
             public void run() {
-                WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(capeDisplay.getEntityId(), new int[]{wearer.getEntityId()});
+                WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(wearer.getEntityId(), new int[]{capeDisplay.getEntityId()});
                 playerManager.sendPacket(player, setPassengers);
             }
         }.runTaskLater(ProdigyCape.getInstance(), 1);
@@ -248,10 +251,10 @@ public class PlayerCape {
 
         // Now, apply this rotated offset to the translation vector.
 
-       // if(ViaVersionUtil.isAvailable()) {
-         //   int version = ViaVersionUtil.getProtocolVersion(player);
-          // player.sendMessage("Version: " + version);
-      //  }
+        // if(ViaVersionUtil.isAvailable()) {
+        //   int version = ViaVersionUtil.getProtocolVersion(player);
+        // player.sendMessage("Version: " + version);
+        //  }
         Vector3f translationVector = new Vector3f(0, Y_OFFSET_TRANSLATION, 0).add(backwardOffset);
 
         // Update cape's transformation with the new rotation and adjusted translation
@@ -259,20 +262,6 @@ public class PlayerCape {
         ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
         meta.setNotifyAboutChanges(false);
         Quaternion4f quaternion4f = new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w);
-
-
-        float trsX = (float) Math.round(translationVector.x * 100) / 100;
-        float trsY = (float) Math.round(translationVector.y * 100) / 100;
-        float trsZ = (float) Math.round(translationVector.z * 100) / 100;
-
-        float rotX = (float) Math.round(quaternion4f.getX() * 100) / 100;
-        float rotY = (float) Math.round(quaternion4f.getY() * 100) / 100;
-        float rotZ = (float) Math.round(quaternion4f.getZ() * 100) / 100;
-        float w = (float) Math.round(quaternion4f.getW() * 100) / 100;
-        float yaw = (float) Math.round(bodyYaw * 100) / 100;
-
-
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("yaw: " + yaw + " trans:" + trsX + ":" + trsY + ":" + trsZ + " rot: " + rotX + ":" + rotY + ":" + rotZ + " w: " + w));
 
         meta.setLeftRotation(quaternion4f);
         meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));

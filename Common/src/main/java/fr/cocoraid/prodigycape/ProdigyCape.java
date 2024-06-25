@@ -91,17 +91,13 @@ public final class ProdigyCape extends JavaPlugin {
 
         capeManager.applyAllCapes();
 
-        loadCommands();
 
-        getServer().getPluginManager().registerEvents(new CapeListener(), this);
-        getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
-        getServer().getPluginManager().registerEvents(new TeleportListener(), this);
-        new Metrics(this, 21468);
 
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener(this));
         PacketEvents.getAPI().init();
         this.playerManager = PacketEvents.getAPI().getPlayerManager();
+        loadCommands();
 
 
         SpigotEntityLibPlatform platform = new SpigotEntityLibPlatform(this);
@@ -114,6 +110,11 @@ public final class ProdigyCape extends JavaPlugin {
 
         EntityLib.init(platform, settings);
         this.passengerActions = PassengerAPI.getAPI(this);
+
+        getServer().getPluginManager().registerEvents(new CapeListener(), this);
+        getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
+        getServer().getPluginManager().registerEvents(new TeleportListener(), this);
+        new Metrics(this, 21468);
 
     }
 
