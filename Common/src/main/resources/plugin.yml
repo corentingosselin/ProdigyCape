@@ -1,7 +1,0 @@
-name: ProdigyCape
-version: '${project.version}'
-main: fr.cocoraid.prodigycape.ProdigyCape
-api-version: 1.19
-softdepend: [Vault]
-depend: [packetevents,PassengerAPI]
-
