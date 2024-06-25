@@ -67,6 +67,6 @@ prodigy.cape.bypass
 
 # TO-DO List
 
-- [ ] Full packet events implementation (No NMS anymore)
+- [x] Full packet events implementation (No NMS anymore)
 - [ ] Better cape physics
 - [ ] Java API for developers
