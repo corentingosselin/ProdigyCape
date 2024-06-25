@@ -103,7 +103,6 @@ public final class ProdigyCape extends JavaPlugin {
         SpigotEntityLibPlatform platform = new SpigotEntityLibPlatform(this);
 
         APIConfig settings = new APIConfig(PacketEvents.getAPI())
-                .debugMode()
                 .tickTickables()
                 .trackPlatformEntities()
                 .usePlatformLogger();

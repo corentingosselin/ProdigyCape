@@ -1,5 +1,5 @@
 name: ProdigyCape
-version: '${project.version}'
+version: '1.0.2-SNAPSHOT'
 main: fr.cocoraid.prodigycape.ProdigyCape
 api-version: 1.19
 softdepend: [Vault]

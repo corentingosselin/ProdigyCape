@@ -23,8 +23,6 @@ import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.meta.display.ItemDisplayMeta;
 import me.tofaa.entitylib.wrapper.WrapperEntity;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,10 +43,10 @@ public class PlayerCape {
 
 
     private float Y_OFFSET_TRANSLATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_20_R1) ? 0.0f : -0.4f;
-    private static int INVERT_BACKWARD_FACTOR = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? -1 : 1;
+    private static float INVERT_BACKWARD_FACTOR = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? -1F : 1F;
     private float Y_ROTATION_OFFSET = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? 180 : 0f;
     private static final float ROTATION_INTERPOLATION_SPEED = 0.15f;
-    private static float DEFAULT_CAPE_X_ROTATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? 0F : 10F;
+    private static float DEFAULT_CAPE_X_ROTATION = VersionChecker.isLowerOrEqualThan(VersionChecker.v1_19_R3) ? 0F : 3F;
 
     private BukkitTask task;
 
@@ -84,8 +82,8 @@ public class PlayerCape {
                 });
         ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
         meta.setItem(SpigotConversionUtil.fromBukkitItemStack(capeItem));
-        float height = 1.9f;
-        meta.setScale(new com.github.retrooper.packetevents.util.Vector3f(1.2f, height, 0.08f));
+        float height = 1.8f;
+        meta.setScale(new com.github.retrooper.packetevents.util.Vector3f(1.1f, height, 0.12F));
         Location l = player.getLocation();
         l.setYaw(0);
         l.setPitch(0);
