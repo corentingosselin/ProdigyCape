@@ -13,7 +13,7 @@
 > The Mojang EULA does not allow to sell capes! We are not responsible for your actions!
 
 > [!IMPORTANT]  
-> **PacketEvents & PassengerAPI are currently required as dependencies!**
+> **PacketEvents & PassengerAPI are currently required as dependencies!**     
 > [PassengerAPI](https://www.spigotmc.org/resources/passengerapi-entity-passenger-bug-fixes-more.117017/)    
 > [PacketEvents](https://www.spigotmc.org/resources/packetevents-api.80279/)    
 > Also add [Vault](https://www.spigotmc.org/resources/vault.34315/) if you want to use the shop system
