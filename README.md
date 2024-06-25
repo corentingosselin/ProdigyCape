@@ -14,8 +14,8 @@
 
 > [!IMPORTANT]  
 > **PacketEvents & PassengerAPI are currently required as dependencies!**
-> [https://www.spigotmc.org/resources/protocollib.1997/  ](https://www.spigotmc.org/resources/passengerapi-entity-passenger-bug-fixes-more.117017/)
-> https://www.spigotmc.org/resources/packetevents-api.80279/
+> [PassengerAPI](https://www.spigotmc.org/resources/passengerapi-entity-passenger-bug-fixes-more.117017/)    
+> [PacketEvents](https://www.spigotmc.org/resources/packetevents-api.80279/)    
 > Also add [Vault](https://www.spigotmc.org/resources/vault.34315/) if you want to use the shop system
 
 
