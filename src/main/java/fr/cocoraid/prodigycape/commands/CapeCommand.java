@@ -98,8 +98,6 @@ public class CapeCommand extends BaseCommand {
     }
 
 
-
-
     @CommandPermission("prodigycape.admin")
     @Subcommand("reload")
     public void onCapeReload(CommandSender sender) {
@@ -118,9 +116,5 @@ public class CapeCommand extends BaseCommand {
             sender.sendMessage("§cThis database is not syncronizable.");
         }
     }
-
-
-
-
 
 }

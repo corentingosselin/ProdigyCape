@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class CapeListener implements Listener {
 
-    private CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
+    private final CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
 
     @EventHandler
     public void sneak(PlayerToggleSneakEvent e) {

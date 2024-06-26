@@ -29,6 +29,8 @@ public class CapeInventory implements InventoryProvider {
     private static CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
     private static LanguageManager langManager = ProdigyCape.getInstance().getLanguageManager();
 
+    private final ClickableItem close = ClickableItem.of(new ItemEditor(Material.BARRIER).setDisplayName(langManager.getLanguage().no_capes_close).getItem(), e -> e.getWhoClicked().closeInventory());
+
     public static SmartInventory getInventory() {
         return SmartInventory.builder()
                 .provider(new CapeInventory())
@@ -36,10 +38,6 @@ public class CapeInventory implements InventoryProvider {
                 .title(langManager.getLanguage().owned_capes_menu_title)
                 .build();
     }
-
-
-    private final ClickableItem close = ClickableItem.of(new ItemEditor(Material.BARRIER).setDisplayName(langManager.getLanguage().no_capes_close).getItem(), e -> e.getWhoClicked().closeInventory());
-
 
     @Override
     public void init(Player player, InventoryContents contents) {

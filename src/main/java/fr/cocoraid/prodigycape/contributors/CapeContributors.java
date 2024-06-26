@@ -22,7 +22,7 @@ public class CapeContributors {
     public record CapeResponse(String key, String name, String uuid, String texture, String description) {
     }
 
-    private Map<UUID, Cape> capeContributors = new HashMap<>();
+    private final Map<UUID, Cape> capeContributors = new HashMap<>();
 
 
     public CapeContributors() {

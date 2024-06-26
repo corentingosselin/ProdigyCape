@@ -207,7 +207,7 @@ public class MysqlDatabase implements Database, SyncronizableDatabase {
             return;
         }
 
-        if (!pp.hasEdition()) {
+        if (!pp.isHasEdition()) {
             return;
         }
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class ProdigyManager {
 
-    private Map<UUID, ProdigyPlayer> prodigyPlayers = new HashMap<>();
+    private final Map<UUID, ProdigyPlayer> prodigyPlayers = new HashMap<>();
 
     public void loadPlayer(UUID uuid) {
         if(prodigyPlayers.containsKey(uuid)) {

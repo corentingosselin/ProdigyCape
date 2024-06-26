@@ -1,15 +1,21 @@
 package fr.cocoraid.prodigycape.cape;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class OwnedCape implements ConfigurationSerializable {
 
     private String key;
+    @Setter
     private double boughtPrice;
+    @Setter
     private long boughtTime;
+    @Setter
     private int editionNumber;
 
     public OwnedCape(String key) {
@@ -33,34 +39,6 @@ public class OwnedCape implements ConfigurationSerializable {
         cape.boughtTime = (long) data.get("boughtTime");
         cape.editionNumber = (int) data.get("edition");
         return cape;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setBoughtPrice(double boughtPrice) {
-        this.boughtPrice = boughtPrice;
-    }
-
-    public void setBoughtTime(long boughtTime) {
-        this.boughtTime = boughtTime;
-    }
-
-    public void setEditionNumber(int editionNumber) {
-        this.editionNumber = editionNumber;
-    }
-
-    public double getBoughtPrice() {
-        return boughtPrice;
-    }
-
-    public int getEditionNumber() {
-        return editionNumber;
-    }
-
-    public long getBoughtTime() {
-        return boughtTime;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package fr.cocoraid.prodigycape.utils;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 
 /**
@@ -9,6 +10,7 @@ public enum VersionChecker {
 
    v1_19_R2(0), v1_19_R3(1), v1_20_R1(2),  v1_20_R2(3), v1_20_R3(4), v1_20_R4(5);
 
+    @Getter
     private static VersionChecker currentVersion;
     private static boolean isPapermc = false;
     static {
@@ -25,6 +27,7 @@ public enum VersionChecker {
         }
     }
 
+    @Getter
     private int index;
 
     VersionChecker(int index) {
@@ -40,11 +43,4 @@ public enum VersionChecker {
         return currentVersion.getIndex() <= v.getIndex();
     }
 
-    public static VersionChecker getCurrentVersion() {
-        return currentVersion;
-    }
-
-    public int getIndex() {
-        return index;
-    }
 }

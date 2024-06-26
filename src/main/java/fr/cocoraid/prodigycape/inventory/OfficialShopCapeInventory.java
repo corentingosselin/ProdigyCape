@@ -121,7 +121,5 @@ public class OfficialShopCapeInventory implements InventoryProvider {
     }
 
     @Override
-    public void update(Player player, InventoryContents inventoryContents) {
-
-    }
+    public void update(Player player, InventoryContents inventoryContents) {}
 }

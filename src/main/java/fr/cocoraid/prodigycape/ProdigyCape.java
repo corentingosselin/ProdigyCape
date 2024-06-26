@@ -24,6 +24,7 @@ import fr.cocoraid.prodigycape.manager.ProdigyManager;
 
 import fr.depends.minuskube.inv.InventoryManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import lombok.Getter;
 import me.tofaa.entitylib.APIConfig;
 import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.spigot.SpigotEntityLibPlatform;
@@ -32,15 +33,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
 
+@Getter
 public final class ProdigyCape extends JavaPlugin {
 
+    @Getter
+    private static ProdigyCape instance;
+    @Getter
     private static InventoryManager invManager;
 
     private LanguageManager languageManager;
     private EconomyManager economyManager;
-
     private PaperCommandManager commandManager;
-    private static ProdigyCape instance;
     private ProdigyManager prodigyManager;
     private CapeManager capeManager;
     private DatabaseManager databaseManager;
@@ -57,8 +60,6 @@ public final class ProdigyCape extends JavaPlugin {
                 .checkForUpdates(true)
                 .bStats(false);
         PacketEvents.getAPI().load();
-
-
     }
 
     @Override
@@ -91,14 +92,10 @@ public final class ProdigyCape extends JavaPlugin {
 
         capeManager.applyAllCapes();
 
-
-
-
         PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener(this));
         PacketEvents.getAPI().init();
         this.playerManager = PacketEvents.getAPI().getPlayerManager();
         loadCommands();
-
 
         SpigotEntityLibPlatform platform = new SpigotEntityLibPlatform(this);
 
@@ -114,9 +111,7 @@ public final class ProdigyCape extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
         getServer().getPluginManager().registerEvents(new TeleportListener(), this);
         new Metrics(this, 21468);
-
     }
-
 
     public void reloadCommand() {
         this.prodigyManager.getProdigyPlayers().keySet().forEach(uuid -> {
@@ -134,7 +129,6 @@ public final class ProdigyCape extends JavaPlugin {
         loadCommands();
     }
 
-
     private void loadCommands() {
         this.commandManager = new PaperCommandManager(this);
         commandManager.getLocales().setDefaultLocale(Locale.ENGLISH);
@@ -146,10 +140,8 @@ public final class ProdigyCape extends JavaPlugin {
         commandManager.registerCommand(new CapeCommand(this));
     }
 
-
     @Override
     public void onDisable() {
-
         this.prodigyManager.getProdigyPlayers().keySet().forEach(uuid -> {
             this.databaseManager.getDatabase().savePlayer(uuid);
         });
@@ -157,51 +149,6 @@ public final class ProdigyCape extends JavaPlugin {
         capeManager.removeAllCapes();
 
         PacketEvents.getAPI().terminate();
-
-
     }
 
-    public static ProdigyCape getInstance() {
-        return instance;
-    }
-
-    public CapeManager getCapeManager() {
-        return capeManager;
-    }
-
-    public PaperCommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public static InventoryManager manager() {
-        return invManager;
-    }
-
-    public ProdigyManager getProdigyManager() {
-        return prodigyManager;
-    }
-
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-    public LanguageManager getLanguageManager() {
-        return languageManager;
-    }
-
-    public EconomyManager getEconomyManager() {
-        return economyManager;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
-
-    public PassengerActions getPassengerActions() {
-        return passengerActions;
-    }
 }
