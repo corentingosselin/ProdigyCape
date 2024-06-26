@@ -68,7 +68,7 @@ public class FileDatabase implements Database {
             return;
         }
 
-        if (!pp.isHasEdition()) {
+        if (!pp.hasEdition()) {
             return;
         }
         File file = initPlayersFile();
