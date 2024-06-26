@@ -6,6 +6,7 @@ import fr.cocoraid.prodigycape.cape.PlayerCape;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class ProdigyPlayer implements ConfigurationSerializable {
 
     private static final CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
 
-
+    @Setter
     private boolean hasEdition = false;
 
     private final UUID uuid;
