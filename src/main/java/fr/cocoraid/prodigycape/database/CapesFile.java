@@ -4,6 +4,7 @@ import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.cape.Cape;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.manager.ProdigyManager;
+import lombok.Setter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -14,8 +15,9 @@ import java.util.List;
 public class CapesFile {
 
 
-    private ProdigyCape instance;
+    private final ProdigyCape instance;
     private ProdigyManager manager;
+    @Setter
     private CapeManager capeManager;
     public CapesFile(ProdigyCape instance) {
         this.instance = instance;
@@ -77,7 +79,4 @@ public class CapesFile {
         return file;
     }
 
-    public void setCapeManager(CapeManager capeManager) {
-        this.capeManager = capeManager;
-    }
 }

@@ -1,10 +1,11 @@
 package fr.cocoraid.prodigycape.database;
 
 import fr.cocoraid.prodigycape.ProdigyCape;
+import lombok.Getter;
 
 public class DatabaseManager {
 
-
+    @Getter
     private Database database;
 
     public DatabaseManager(ProdigyCape instance, DatabaseType type) {
@@ -25,10 +26,6 @@ public class DatabaseManager {
 
     public void close() {
         database.close();
-    }
-
-    public Database getDatabase() {
-        return database;
     }
 
 }

@@ -16,9 +16,9 @@ import java.util.UUID;
 
 public class FileDatabase implements Database {
 
-    private ProdigyCape instance;
-    private ProdigyManager manager;
-    private CapeManager capeManager;
+    private final ProdigyCape instance;
+    private final ProdigyManager manager;
+    private final CapeManager capeManager;
 
     public FileDatabase(ProdigyCape instance) {
         this.instance = instance;
@@ -68,7 +68,7 @@ public class FileDatabase implements Database {
             return;
         }
 
-        if (!pp.hasEdition()) {
+        if (!pp.isHasEdition()) {
             return;
         }
         File file = initPlayersFile();

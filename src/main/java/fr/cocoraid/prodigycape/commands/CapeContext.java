@@ -10,8 +10,8 @@ import fr.cocoraid.prodigycape.ProdigyCape;
 
 public class CapeContext {
 
-    private ProdigyCape instance;
-    private PaperCommandManager manager;
+    private final ProdigyCape instance;
+    private final PaperCommandManager manager;
 
     public CapeContext(ProdigyCape instance) {
         this.instance = instance;

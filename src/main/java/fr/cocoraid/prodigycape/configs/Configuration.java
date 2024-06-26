@@ -2,23 +2,29 @@ package fr.cocoraid.prodigycape.configs;
 
 import fr.cocoraid.prodigycape.ProdigyCape;
 import fr.cocoraid.prodigycape.database.DatabaseType;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
+
 public class Configuration {
 
 
-    public static record DatabaseCredentials(String host, int port, String name, String user, String password) {
-    }
+    public static record DatabaseCredentials(String host, int port, String name, String user, String password) {}
 
+    @Getter
     private String language = "en_EN";
+    @Getter
     private String customCommand = "cape";
     private final String LANGUAGE = "language";
+    @Getter
     private DatabaseType databaseType = DatabaseType.FILE;
+    @Getter
     private DatabaseCredentials databaseCredentials;
-    private ProdigyCape instance;
+
+    private final ProdigyCape instance;
 
     private static final String DB_CREDENTIALS = "database_credentials";
     private static final String DB_HOST = DB_CREDENTIALS + ".host";
@@ -26,7 +32,6 @@ public class Configuration {
     private static final String DB_NAME = DB_CREDENTIALS + ".name";
     private static final String DB_USER = DB_CREDENTIALS + ".user";
     private static final String DB_PASSWORD = DB_CREDENTIALS + ".password";
-
 
     public Configuration(ProdigyCape instance) {
         this.instance = instance;
@@ -71,19 +76,4 @@ public class Configuration {
         }
     }
 
-    public String getCustomCommand() {
-        return customCommand;
-    }
-
-    public DatabaseType getDatabaseType() {
-        return databaseType;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public DatabaseCredentials getDatabaseCredentials() {
-        return databaseCredentials;
-    }
 }

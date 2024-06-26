@@ -9,6 +9,8 @@ import fr.cocoraid.prodigycape.database.CapesFile;
 import fr.cocoraid.prodigycape.database.DatabaseManager;
 import fr.cocoraid.prodigycape.hook.vault.EconomyManager;
 import fr.cocoraid.prodigycape.language.LanguageManager;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -17,7 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CapeManager {
-
 
     public static final List<Cape> DEFAULT_CAPES = new ArrayList<>(
             Arrays.asList(
@@ -90,17 +91,22 @@ public class CapeManager {
     );
 
 
-    private Map<String, Cape> capes = new HashMap<>();
+    @Getter
+    private final Map<String, Cape> capes = new HashMap<>();
 
-
+    @Getter
     public CapeContributors capeContributors;
 
-    private ProdigyCape instance;
-    private ProdigyManager prodigyManager;
-    private EconomyManager economyManager;
+    private final ProdigyCape instance;
+    private final ProdigyManager prodigyManager;
+    private final EconomyManager economyManager;
+
+    @Setter
     private DatabaseManager databaseManager;
-    private LanguageManager languageManager;
-    private CapesFile capesFile;
+
+    private final LanguageManager languageManager;
+    @Getter
+    private final CapesFile capesFile;
 
 
     public CapeManager(ProdigyCape instance) {
@@ -225,11 +231,6 @@ public class CapeManager {
         return capes.get(key);
     }
 
-    public Map<String, Cape> getCapes() {
-        return capes;
-    }
-
-
     public void removeAllCapes() {
         prodigyManager.getProdigyPlayers().values().forEach(pp -> {
             if (pp.hasCape()) {
@@ -246,18 +247,6 @@ public class CapeManager {
                 pp.getCape().spawn(player);
             }
         });
-    }
-
-    public CapeContributors getCapeContributors() {
-        return capeContributors;
-    }
-
-    public void setDatabaseManager(DatabaseManager databaseManager) {
-        this.databaseManager = databaseManager;
-    }
-
-    public CapesFile getCapesFile() {
-        return capesFile;
     }
 
     public void clearCapes() {

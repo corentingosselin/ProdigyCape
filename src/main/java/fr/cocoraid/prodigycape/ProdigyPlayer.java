@@ -4,28 +4,27 @@ import fr.cocoraid.prodigycape.cape.Cape;
 import fr.cocoraid.prodigycape.cape.OwnedCape;
 import fr.cocoraid.prodigycape.cape.PlayerCape;
 import fr.cocoraid.prodigycape.manager.CapeManager;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
 
+
+@Getter
+@RequiredArgsConstructor
 public class ProdigyPlayer implements ConfigurationSerializable {
 
     private static final CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
 
+    @Setter
     private boolean hasEdition = false;
 
-    private UUID uuid;
+    private final UUID uuid;
     private PlayerCape cape;
-    private Set<OwnedCape> ownedCapes = new HashSet<>();
+    private final Set<OwnedCape> ownedCapes = new HashSet<>();
 
-
-    public ProdigyPlayer(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
 
     public void setCape(PlayerCape cape) {
         this.cape = cape;
@@ -34,10 +33,6 @@ public class ProdigyPlayer implements ConfigurationSerializable {
 
     public void setCapeWithoutEdition(PlayerCape cape) {
         this.cape = cape;
-    }
-
-    public PlayerCape getCape() {
-        return cape;
     }
 
     public boolean hasCape() {
@@ -52,10 +47,6 @@ public class ProdigyPlayer implements ConfigurationSerializable {
     public void removeOwnedCape(OwnedCape cape) {
         ownedCapes.remove(cape);
         hasEdition = true;
-    }
-
-    public boolean hasEdition() {
-        return hasEdition;
     }
 
     @Override
@@ -101,14 +92,6 @@ public class ProdigyPlayer implements ConfigurationSerializable {
         }
 
         return pp;
-    }
-
-    public Set<OwnedCape> getOwnedCapes() {
-        return ownedCapes;
-    }
-
-    public void setHasEdition(boolean hasEdition) {
-        this.hasEdition = hasEdition;
     }
 
     @Override
