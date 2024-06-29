@@ -10,6 +10,7 @@ import fr.cocoraid.prodigycape.cape.Cape;
 import fr.cocoraid.prodigycape.database.DatabaseManager;
 import fr.cocoraid.prodigycape.manager.CapeManager;
 import fr.cocoraid.prodigycape.ProdigyCape;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,7 +47,10 @@ public class JoinQuitListener implements Listener {
             public void run() {
                 EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte)126);
                 WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
-                playerManager.sendPacket(player, metadata);
+                Bukkit.getOnlinePlayers().forEach(cur -> {
+                    playerManager.sendPacket(cur, metadata);
+                });
+
             }
         }.runTaskLaterAsynchronously(instance, 10L);
 

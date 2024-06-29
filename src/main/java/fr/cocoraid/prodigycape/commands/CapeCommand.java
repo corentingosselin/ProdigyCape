@@ -46,7 +46,7 @@ public class CapeCommand extends BaseCommand {
             player.sendMessage(s);
         }
 
-        if(player.hasPermission("prodigycape.admin")) {
+        if (player.hasPermission("prodigycape.admin")) {
             player.sendMessage("§e/cape reload §7- §fReload the capes");
             player.sendMessage("§e/cape sync §7- §fSynchronize the local configuration with the database");
         }
@@ -59,7 +59,7 @@ public class CapeCommand extends BaseCommand {
     @Subcommand("test")
     public void onCapeTest(Player player) {
         byte isCape = (byte) (toggleCape ? 126 : 127);
-        EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte)isCape);
+        EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte) isCape);
         WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
         playerManager.sendPacket(player, metadata);
         toggleCape = !toggleCape;
@@ -71,12 +71,27 @@ public class CapeCommand extends BaseCommand {
     @CommandCompletion("@capes")
     @Subcommand("apply")
     public void onCapeApply(Player player, Cape cape) {
-        if(!capeManager.ownsCape(player, cape)) {
+        if (!capeManager.ownsCape(player, cape)) {
             player.sendMessage(languageManager.getLanguage().no_permission);
             return;
         }
         capeManager.applyCape(player, cape);
     }
+
+    //apply to other player
+    @Syntax("<cape> <player>")
+    @CommandCompletion("@capes @players")
+    @CommandPermission("prodigycape.admin")
+    @Subcommand("apply")
+    public void onCapeApply(CommandSender sender, Cape cape, Player target) {
+        if (!capeManager.ownsCape(target, cape)) {
+            sender.sendMessage(languageManager.getLanguage().no_permission);
+            return;
+        }
+        capeManager.applyCape(target, cape);
+    }
+
+
 
     @Syntax("<cape>")
     @CommandPermission("prodigycape.menu")

@@ -1,7 +1,8 @@
 name: ProdigyCape
-version: '1.0.2-SNAPSHOT'
+version: '1.0.3-SNAPSHOT'
 main: fr.cocoraid.prodigycape.ProdigyCape
 api-version: 1.19
-softdepend: [Vault]
-depend: [PassengerAPI, packetevents]
+softdepend: [Vault,PassengerAPI]
+depend: [packetevents]
+
 

@@ -6,7 +6,7 @@
 
     <groupId>fr.cocoraid.prodigycape</groupId>
     <artifactId>ProdigyCape</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>ProdigyCape</name>
 
     <properties>

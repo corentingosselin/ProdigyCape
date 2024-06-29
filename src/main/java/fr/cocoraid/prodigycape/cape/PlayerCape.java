@@ -89,9 +89,9 @@ public class PlayerCape {
         l.setPitch(0);
         capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(l));
         //working as well
-        //WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(player.getEntityId(), new int[]{capeDisplay.getEntityId()});
-        //playerManager.sendPacket(player, setPassengers);
-        passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
+        WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(player.getEntityId(), new int[]{capeDisplay.getEntityId()});
+        playerManager.sendPacket(player, setPassengers);
+        //passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
 
     }
 
