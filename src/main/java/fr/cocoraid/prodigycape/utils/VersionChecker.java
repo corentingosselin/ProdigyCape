@@ -8,11 +8,12 @@ import org.bukkit.Bukkit;
  */
 public enum VersionChecker {
 
-   v1_19_R2(0), v1_19_R3(1), v1_20_R1(2),  v1_20_R2(3), v1_20_R3(4), v1_20_R4(5);
+    v1_19_R2(0), v1_19_R3(1), v1_20_R1(2), v1_20_R2(3), v1_20_R3(4), v1_20_R4(5), v1_21_R1(6);
 
     @Getter
     private static VersionChecker currentVersion;
     private static boolean isPapermc = false;
+
     static {
         try {
             Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData");
@@ -20,10 +21,17 @@ public enum VersionChecker {
         } catch (ClassNotFoundException ignored) {
         }
 
-        if(isPapermc && Bukkit.getBukkitVersion().contains("1.20.6")) {
-            currentVersion = VersionChecker.v1_20_R4;
+        if (isPapermc) {
+            String version = Bukkit.getBukkitVersion();
+            if (version.contains("1.20.6")) {
+                currentVersion = VersionChecker.v1_20_R4;
+            } else if (version.contains("1.21")) {
+                currentVersion = VersionChecker.v1_21_R1;
+            } else {
+                currentVersion = VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
+            }
         } else {
-            currentVersion =  VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
+            currentVersion = VersionChecker.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]);
         }
     }
 

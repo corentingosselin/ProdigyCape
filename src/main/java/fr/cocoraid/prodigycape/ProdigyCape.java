@@ -5,8 +5,6 @@ import co.aikar.commands.PaperCommandManager;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.player.PlayerManager;
-import com.maximde.passengerapi.PassengerAPI;
-import com.maximde.passengerapi.PassengerActions;
 import fr.cocoraid.prodigycape.commands.CapeCommand;
 import fr.cocoraid.prodigycape.commands.CapeCompletion;
 import fr.cocoraid.prodigycape.commands.CapeContext;
@@ -50,7 +48,6 @@ public final class ProdigyCape extends JavaPlugin {
     private Configuration configuration;
 
     private PlayerManager playerManager;
-    private PassengerActions passengerActions;
 
 
     @Override
@@ -105,7 +102,6 @@ public final class ProdigyCape extends JavaPlugin {
                 .usePlatformLogger();
 
         EntityLib.init(platform, settings);
-        this.passengerActions = PassengerAPI.getAPI(this);
 
         getServer().getPluginManager().registerEvents(new CapeListener(), this);
         getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);

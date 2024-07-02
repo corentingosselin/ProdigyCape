@@ -190,6 +190,7 @@ public class CapeManager {
 
     public boolean ownsCape(Player player, Cape cape) {
         if (player.hasPermission("prodigy.cape." + cape.getKey()) || player.hasPermission("prodigy.cape.*")) {
+
             return true;
         }
         ProdigyPlayer pp = prodigyManager.getProdigyPlayer(player.getUniqueId());

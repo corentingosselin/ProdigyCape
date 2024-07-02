@@ -78,20 +78,13 @@ public class CapeCommand extends BaseCommand {
         capeManager.applyCape(player, cape);
     }
 
-    //apply to other player
     @Syntax("<cape> <player>")
     @CommandCompletion("@capes @players")
     @CommandPermission("prodigycape.admin")
-    @Subcommand("apply")
+    @Subcommand("force apply")
     public void onCapeApply(CommandSender sender, Cape cape, Player target) {
-        if (!capeManager.ownsCape(target, cape)) {
-            sender.sendMessage(languageManager.getLanguage().no_permission);
-            return;
-        }
         capeManager.applyCape(target, cape);
     }
-
-
 
     @Syntax("<cape>")
     @CommandPermission("prodigycape.menu")

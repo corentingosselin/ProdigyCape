@@ -10,7 +10,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 
-import com.maximde.passengerapi.PassengerActions;
 
 import fr.cocoraid.prodigycape.ProdigyCape;
 
@@ -38,7 +37,6 @@ public class PlayerCape {
 
 
     private static ProdigyCape instance = ProdigyCape.getInstance();
-    private static PassengerActions passengerActions = instance.getPassengerActions();
     private static PlayerManager playerManager = instance.getPlayerManager();
 
 
