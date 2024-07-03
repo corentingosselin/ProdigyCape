@@ -6,7 +6,7 @@
 
     <groupId>fr.cocoraid.prodigycape</groupId>
     <artifactId>ProdigyCape</artifactId>
-    <version>1.0.31-SNAPSHOT</version>
+    <version>1.0.32-SNAPSHOT</version>
     <name>ProdigyCape</name>
 
     <properties>
@@ -39,7 +39,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>/Users/prodigy/Documents/minecraft/serveur/1.21/plugins</outputDirectory>
+                    <outputDirectory>/Users/prodigy/Documents/minecraft/serveur/1.20.1/plugins</outputDirectory>
                 </configuration>
             </plugin>
 

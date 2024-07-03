@@ -15,6 +15,7 @@ import fr.cocoraid.prodigycape.ProdigyCape;
 
 import fr.cocoraid.prodigycape.utils.ItemEditor;
 
+import fr.cocoraid.prodigycape.utils.ProtocolVersionOffset;
 import fr.cocoraid.prodigycape.utils.VersionChecker;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import io.github.retrooper.packetevents.util.viaversion.ViaVersionUtil;
@@ -73,11 +74,7 @@ public class PlayerCape {
     }
 
     public void forceSpawn(Player player) {
-        player.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
-                ).forEach(p -> {
-                    capeDisplay.addViewer(p.getUniqueId());
-                });
+
         ItemDisplayMeta meta = (ItemDisplayMeta) capeDisplay.getEntityMeta();
         meta.setItem(SpigotConversionUtil.fromBukkitItemStack(capeItem));
         float height = 1.8f;
@@ -85,11 +82,27 @@ public class PlayerCape {
         Location l = player.getLocation();
         l.setYaw(0);
         l.setPitch(0);
-        capeDisplay.spawn(SpigotConversionUtil.fromBukkitLocation(l));
-        //working as well
-        WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(player.getEntityId(), new int[]{capeDisplay.getEntityId()});
-        playerManager.sendPacket(player, setPassengers);
-        //passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
+        player.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
+                ).forEach(p -> {
+                    WrapperPlayServerSpawnEntity spawnEntity = new WrapperPlayServerSpawnEntity(
+                            capeDisplay.getEntityId(),
+                            capeDisplay.getUuid(),
+                            capeDisplay.getEntityType(),
+                            SpigotConversionUtil.fromBukkitLocation(l),
+                            0,
+                            0,
+                            null);
+                    playerManager.sendPacket(p, spawnEntity);
+
+                    //working as well
+                    WrapperPlayServerSetPassengers setPassengers = new WrapperPlayServerSetPassengers(player.getEntityId(), new int[]{capeDisplay.getEntityId()});
+                    playerManager.sendPacket(p, setPassengers);
+                    //passengerActions.addPassenger(player.getEntityId(), capeDisplay.getEntityId());
+                });
+
+        capeDisplay.setLocation(SpigotConversionUtil.fromBukkitLocation(l));
+
 
     }
 
@@ -202,7 +215,14 @@ public class PlayerCape {
             task = null;
         }
         if (capeDisplay != null) {
-            capeDisplay.despawn();
+            player.getWorld().getPlayers().stream()
+                    .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < 100)
+                    .forEach(p -> {
+                        WrapperPlayServerDestroyEntities destroyEntities = new WrapperPlayServerDestroyEntities(new int[]{capeDisplay.getEntityId()});
+                        playerManager.sendPacket(p, destroyEntities);
+                    });
+
+
             capeDisplay = null;
         }
 
@@ -245,13 +265,6 @@ public class PlayerCape {
         // This ensures the offset moves directly backwards from the player's current facing direction.
         backwardOffset.rotateY(yawRadians);
 
-        // Now, apply this rotated offset to the translation vector.
-
-        // if(ViaVersionUtil.isAvailable()) {
-        //   int version = ViaVersionUtil.getProtocolVersion(player);
-        // player.sendMessage("Version: " + version);
-        //  }
-        Vector3f translationVector = new Vector3f(0, Y_OFFSET_TRANSLATION, 0).add(backwardOffset);
 
         // Update cape's transformation with the new rotation and adjusted translation
 
@@ -260,11 +273,23 @@ public class PlayerCape {
         Quaternion4f quaternion4f = new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w);
 
         meta.setLeftRotation(quaternion4f);
-        meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
-        WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
+
         player.getWorld().getPlayers().stream()
                 .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
                 ).forEach(p -> {
+
+                    // Now, apply this rotated offset to the translation vector.
+                    float y_offset = Y_OFFSET_TRANSLATION;
+                    if (ViaVersionUtil.isAvailable()) {
+                        int version = ViaVersionUtil.getProtocolVersion(p);
+                        y_offset = ProtocolVersionOffset.getOffsetByVersion(version);
+                    }
+                    Vector3f translationVector = new Vector3f(0, y_offset, 0).add(backwardOffset);
+
+                    meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
+                    WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
+
+
                     playerManager.sendPacket(p, metadata);
                 });
     }

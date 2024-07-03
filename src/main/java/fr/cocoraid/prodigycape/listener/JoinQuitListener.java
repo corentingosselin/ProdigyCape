@@ -45,7 +45,7 @@ public class JoinQuitListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte)126);
+                EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte) 126);
                 WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
                 Bukkit.getOnlinePlayers().forEach(cur -> {
                     playerManager.sendPacket(cur, metadata);
@@ -54,18 +54,25 @@ public class JoinQuitListener implements Listener {
             }
         }.runTaskLaterAsynchronously(instance, 10L);
 
-        Cape contributorCape = capeManager.getCapeContributors().getCape(player.getUniqueId());
-        if (contributorCape != null && !capeManager.hasCape(player)) {
-            capeManager.applyCape(player, contributorCape);
-            return;
-        }
-        if (!capeManager.hasCape(player)) {
-            return;
-        }
-        if (!capeManager.ownsCape(player, capeManager.getCurrentCape(player).getCape())) {
-            return;
-        }
-        capeManager.getCurrentCape(player).spawn(player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Cape contributorCape = capeManager.getCapeContributors().getCape(player.getUniqueId());
+                if (contributorCape != null && !capeManager.hasCape(player)) {
+                    capeManager.applyCape(player, contributorCape);
+                    return;
+                }
+                if (!capeManager.hasCape(player)) {
+                    return;
+                }
+                if (!capeManager.ownsCape(player, capeManager.getCurrentCape(player).getCape())) {
+                    return;
+                }
+
+                capeManager.getCurrentCape(player).spawn(player);
+            }
+        }.runTaskLaterAsynchronously(instance, 10L);
 
     }
 
