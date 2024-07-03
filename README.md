@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/badge/Minecraft%20version-1.19.4_--_1.20.6-brightgreen.svg" alt="Minecraft version"></a>
+  <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/badge/Minecraft%20version-1.19.4_--_1.21-brightgreen.svg" alt="Minecraft version"></a>
   <a href="https://www.spigotmc.org/resources/116899/reviews"><img src="https://img.shields.io/spiget/rating/116899?label=Spigot%20rating" alt="Spigot rating"></a>
   <a href="https://www.spigotmc.org/resources/116899/"><img src="https://img.shields.io/spiget/downloads/116899?label=Spigot%20downloads" alt="Spigot downloads"></a>
   <a href="https://www.paypal.com/donate/?hosted_button_id=56KN7WE2G324C"><img src="https://img.shields.io/badge/Donate-PayPal-blue.svg" alt="Minecraft version"></a>
