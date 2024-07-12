@@ -26,6 +26,7 @@ import me.tofaa.entitylib.wrapper.WrapperEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,6 +34,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerCape {
 
@@ -215,13 +219,11 @@ public class PlayerCape {
             task = null;
         }
         if (capeDisplay != null) {
-            player.getWorld().getPlayers().stream()
-                    .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < 100)
-                    .forEach(p -> {
-                        WrapperPlayServerDestroyEntities destroyEntities = new WrapperPlayServerDestroyEntities(new int[]{capeDisplay.getEntityId()});
-                        playerManager.sendPacket(p, destroyEntities);
-                    });
 
+            WrapperPlayServerDestroyEntities destroyEntities = new WrapperPlayServerDestroyEntities(new int[]{capeDisplay.getEntityId()});
+            getViewerPlayers(player).forEach(p -> {
+                playerManager.sendPacket(p, destroyEntities);
+            });
 
             capeDisplay = null;
         }
@@ -274,24 +276,23 @@ public class PlayerCape {
 
         meta.setLeftRotation(quaternion4f);
 
-        player.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < Bukkit.getViewDistance() * Bukkit.getViewDistance()
-                ).forEach(p -> {
 
-                    // Now, apply this rotated offset to the translation vector.
-                    float y_offset = Y_OFFSET_TRANSLATION;
-                    if (ViaVersionUtil.isAvailable()) {
-                        int version = ViaVersionUtil.getProtocolVersion(p);
-                        y_offset = ProtocolVersionOffset.getOffsetByVersion(version);
-                    }
-                    Vector3f translationVector = new Vector3f(0, y_offset, 0).add(backwardOffset);
+        getViewerPlayers(player).forEach(p -> {
+            // Now, apply this rotated offset to the translation vector.
+            float y_offset = Y_OFFSET_TRANSLATION;
+            if (ViaVersionUtil.isAvailable()) {
+                int version = ViaVersionUtil.getProtocolVersion(p);
+                y_offset = ProtocolVersionOffset.getOffsetByVersion(version);
+            }
+            Vector3f translationVector = new Vector3f(0, y_offset, 0).add(backwardOffset);
 
-                    meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
-                    WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
+            meta.setTranslation(new com.github.retrooper.packetevents.util.Vector3f(translationVector.x, translationVector.y, translationVector.z));
+            WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(capeDisplay.getEntityId(), meta.entityData());
 
+            playerManager.sendPacket(p, metadata);
 
-                    playerManager.sendPacket(p, metadata);
-                });
+        });
+
     }
 
 
@@ -341,7 +342,11 @@ public class PlayerCape {
         if (visibility) {
             forceSpawn(player);
         } else {
-            capeDisplay.despawn();
+            WrapperPlayServerDestroyEntities destroyEntities = new WrapperPlayServerDestroyEntities(new int[]{capeDisplay.getEntityId()});
+            getViewerPlayers(player).forEach(p -> {
+                playerManager.sendPacket(p, destroyEntities);
+            });
+
         }
         this.visible = visibility;
     }
@@ -356,5 +361,20 @@ public class PlayerCape {
 
     public boolean isVisible() {
         return visible;
+    }
+
+
+    public int getViewDistance(World world) {
+        int viewDistanceChunks = world.getViewDistance();
+        int viewDistanceBlocks = viewDistanceChunks * 16;
+        int distanceSquared = viewDistanceBlocks * viewDistanceBlocks;
+        return distanceSquared;
+    }
+
+    public List<Player> getViewerPlayers(Player player) {
+        int viewDistance = getViewDistance(player.getWorld());
+        return player.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < viewDistance)
+                .collect(Collectors.toList());
     }
 }

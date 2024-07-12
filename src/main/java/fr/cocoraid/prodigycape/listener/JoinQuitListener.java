@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,6 +89,24 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void asyncJoin(AsyncPlayerPreLoginEvent event) {
         databaseManager.getDatabase().loadPlayer(event.getUniqueId());
+    }
+
+    @EventHandler
+    public void WorldChange(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                EntityData data = new EntityData(17, EntityDataTypes.BYTE, (byte) 126);
+                WrapperPlayServerEntityMetadata metadata = new WrapperPlayServerEntityMetadata(player.getEntityId(), List.of(data));
+                Bukkit.getOnlinePlayers().forEach(cur -> {
+                    playerManager.sendPacket(cur, metadata);
+                });
+
+            }
+        }.runTaskLaterAsynchronously(instance, 10L);
+
+
     }
 
 }

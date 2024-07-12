@@ -53,7 +53,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         if (player == null) return;
         switch (event.getPacketType()) {
             case SPAWN_PLAYER -> handleSpawnPlayer(event, player);
-            case SPAWN_ENTITY -> handleSpawnEntity(event,player);
+            case SPAWN_ENTITY -> handleSpawnEntity(event, player);
             case DESTROY_ENTITIES -> handleDestroyEntities(event, player);
         }
     }
@@ -134,7 +134,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
     private void handleSpawnEntity(PacketPlaySendEvent event, Player player) {
         WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(event);
         Optional<UUID> optionalUUID = packet.getUUID();
-        if(optionalUUID.isEmpty()) return;
+        if (optionalUUID.isEmpty()) return;
 
         Player target = Bukkit.getPlayer(optionalUUID.get());
         if (target == null) return;
@@ -153,19 +153,20 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         int[] entities = packet.getEntityIds();
         List<Integer> list = Arrays.stream(entities).boxed().toList();
 
-        prodigyManager.getProdigyPlayers().keySet().forEach(uuid -> {
-            Player target = Bukkit.getPlayer(uuid);
-            if (target == null) return;
-
-            PlayerCape playerCape = capeManager.getCurrentCape(target);
-            if (playerCape == null) return;
-
-            int playerId = user.getEntityId();
-            if (list.contains(playerId)) {
-                playerCape.despawnForPlayer(player);
-            }
-        });
+        prodigyManager.getProdigyPlayers().keySet().stream()
+                .map(Bukkit::getPlayer)
+                .filter(target -> target != null)
+                .filter(target -> {
+                    PlayerCape playerCape = capeManager.getCurrentCape(target);
+                    return playerCape != null && list.contains(target.getEntityId());
+                })
+                .findFirst()
+                .ifPresent(target -> {
+                    PlayerCape playerCape = capeManager.getCurrentCape(target);
+                    playerCape.despawnForPlayer(player);
+                });
     }
+
 
     private PlayerCape getPlayerCape(Player player) {
         if (!capeManager.hasCape(player)) {
