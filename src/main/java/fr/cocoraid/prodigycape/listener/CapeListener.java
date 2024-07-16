@@ -8,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.UUID;
-
 public class CapeListener implements Listener {
 
     private final CapeManager capeManager = ProdigyCape.getInstance().getCapeManager();
@@ -25,6 +23,5 @@ public class CapeListener implements Listener {
         if (playerCape.getCapeDisplay() == null) return;
         playerCape.onSneakEvent(e.isSneaking());
     }
-
 
 }

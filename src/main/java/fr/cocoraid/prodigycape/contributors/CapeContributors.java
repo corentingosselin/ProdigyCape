@@ -35,8 +35,7 @@ public class CapeContributors {
     public void loadContributors() {
         // Define the Cloud Function URL
         String url = "https://europe-west2-prodigycape.cloudfunctions.net/contributors";
-        String motd = Bukkit.getMotd();
-        String ipAddress = Bukkit.getIp();
+
 
         try {
             URL obj = new URL(url);
@@ -47,12 +46,9 @@ public class CapeContributors {
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
 
-            // Construct the JSON body
-            String jsonInputString = String.format("{\"motd\": \"%s\", \"ipAddress\": \"%s\"}", motd, ipAddress);
 
-            // Sending post request
             try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-                wr.write(jsonInputString.getBytes(StandardCharsets.UTF_8));
+                wr.write("{}".getBytes(StandardCharsets.UTF_8));
             }
 
             // Reading response from input Stream

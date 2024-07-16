@@ -70,6 +70,8 @@ public class PlayerCape {
     private float currentBodyYaw = 0.0f;
     private float targetCapeXRotation = DEFAULT_CAPE_X_ROTATION;
     private Location lastPosition;
+    private Location lastLocation;
+    private boolean isMoving = false;
 
 
     public PlayerCape(Cape cape) {
@@ -146,9 +148,29 @@ public class PlayerCape {
                 if (!visible) {
                     return;
                 }
-                targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
-                currentCapeXRotation += (targetCapeXRotation - currentCapeXRotation) * ROTATION_INTERPOLATION_SPEED;
-                update(currentBodyYaw);
+
+                Location currentLocation = player.getLocation();
+                if (lastLocation == null) {
+                    lastLocation = currentLocation;
+                }
+
+                boolean hasMoved = lastLocation.getX() != currentLocation.getX() || lastLocation.getZ() != currentLocation.getZ();
+                if (hasMoved) {
+                    if (!isMoving) {
+                        isMoving = true;
+                    }
+                } else {
+                    if (isMoving) {
+                        isMoving = false;
+                    }
+                }
+
+                if (isMoving) {
+                    targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
+                    currentCapeXRotation += (targetCapeXRotation - currentCapeXRotation) * ROTATION_INTERPOLATION_SPEED;
+                    update(currentBodyYaw);
+                }
+                lastLocation = currentLocation;
 
 
             }
@@ -377,4 +399,5 @@ public class PlayerCape {
                 .filter(p -> p.getLocation().distanceSquared(player.getLocation()) < viewDistance)
                 .collect(Collectors.toList());
     }
+
 }
