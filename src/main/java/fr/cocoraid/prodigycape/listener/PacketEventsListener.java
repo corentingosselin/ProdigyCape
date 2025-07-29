@@ -5,10 +5,7 @@ import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionAndRotation;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSettings;
+import com.github.retrooper.packetevents.wrapper.play.client.*;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
@@ -28,12 +25,12 @@ import java.util.UUID;
 
 public class PacketEventsListener extends SimplePacketListenerAbstract {
 
-    private final CapeManager capeManager;
+    private static CapeManager capeManager;
     private final ProdigyManager prodigyManager;
 
     public PacketEventsListener(ProdigyCape instance) {
         super(PacketListenerPriority.HIGH);
-        this.capeManager = instance.getCapeManager();
+        capeManager = instance.getCapeManager();
         this.prodigyManager = instance.getProdigyManager();
     }
 
@@ -44,6 +41,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
             case PLAYER_POSITION_AND_ROTATION -> handlePlayerPositionAndRotation(event);
             case PLAYER_POSITION -> handlePlayerPosition(event);
             case PLAYER_ROTATION -> handlePlayerRotation(event);
+            case ANIMATION -> handlePlayerHandAnimation(event);
         }
     }
 
@@ -119,6 +117,16 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         updatePlayerCapeRotation(player, playerCape, packet.getYaw());
     }
 
+    private void handlePlayerHandAnimation(PacketPlayReceiveEvent event) {
+        Player player = (Player) event.getPlayer();
+        if (player == null) return;
+
+        PlayerCape playerCape = getPlayerCape(player);
+        if (playerCape == null) return;
+
+        updatePlayerCapeAttackAnimation(player, playerCape);
+    }
+
     private void handleSpawnPlayer(PacketPlaySendEvent event, Player player) {
         WrapperPlayServerSpawnPlayer packet = new WrapperPlayServerSpawnPlayer(event);
         UUID uuid = packet.getUUID();
@@ -188,8 +196,9 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
     private void updatePlayerCape(Player player, PlayerCape playerCape, Location from, Location to, @Nullable Float yaw) {
         float lastReceivedRawYaw = playerCape.getLastBodyYaw();
         float bodyYaw = playerCape.getCurrentBodyYaw();
+        float attackAnim = playerCape.getAttackAnimation();
 
-        float calculatedBodyYaw = calculateBodyYaw(player, from, to, lastReceivedRawYaw, bodyYaw);
+        float calculatedBodyYaw = calculateBodyYaw(player, from, to, lastReceivedRawYaw, bodyYaw, attackAnim);
         playerCape.setCurrentBodyYaw(calculatedBodyYaw);
 
         float calculatedSpeed = (float) Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + Math.pow(to.getZ() - from.getZ(), 2));
@@ -205,15 +214,26 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
     private void updatePlayerCapeRotation(Player player, PlayerCape playerCape, float yaw) {
         float lastReceivedRawYaw = playerCape.getLastBodyYaw();
         float bodyYaw = playerCape.getCurrentBodyYaw();
+        float attackAnim = playerCape.getAttackAnimation();
 
-        float calculatedBodyYaw = calculateBodyYaw(player, null, null, lastReceivedRawYaw, bodyYaw);
+        float calculatedBodyYaw = calculateBodyYaw(player, null, null, lastReceivedRawYaw, bodyYaw, attackAnim);
         playerCape.setCurrentBodyYaw(calculatedBodyYaw);
         playerCape.update(calculatedBodyYaw);
 
         playerCape.setLastBodyYaw(yaw);
     }
 
-    public float calculateBodyYaw(Player player, @Nullable Location from, @Nullable Location to, float lastReceivedRawYaw, float bodyYaw) {
+    private void updatePlayerCapeAttackAnimation(Player player, PlayerCape playerCape) {
+        playerCape.setAttackAnimation(1f);
+        float lastReceivedRawYaw = playerCape.getLastBodyYaw();
+        float bodyYaw = playerCape.getCurrentBodyYaw();
+
+        float calculatedBodyYaw = calculateBodyYaw(player, null, null, lastReceivedRawYaw, bodyYaw, 1f);
+        playerCape.setCurrentBodyYaw(calculatedBodyYaw);
+        playerCape.update(calculatedBodyYaw);
+    }
+
+    public static float calculateBodyYaw(Player player, @Nullable Location from, @Nullable Location to, float lastReceivedRawYaw, float bodyYaw, float attackAnim) {
         float yaw = lastReceivedRawYaw;
 
         if (from != null && to != null) {
@@ -232,6 +252,9 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
                 }
             }
         }
+        if (attackAnim > 0.0F) {
+            bodyYaw = yaw;
+        }
 
         return turnBody(player, bodyYaw, yaw);
     }
@@ -246,7 +269,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
         return degrees;
     }
 
-    public float turnBody(Player player, float bodyRotation, float yaw) {
+    public static float turnBody(Player player, float bodyRotation, float yaw) {
         PlayerCape playerCape = capeManager.getCurrentCape(player);
         float currentBodyYaw = playerCape.getCurrentBodyYaw();
 
