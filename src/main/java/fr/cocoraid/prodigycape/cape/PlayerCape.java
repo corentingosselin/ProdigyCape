@@ -20,6 +20,8 @@ import fr.cocoraid.prodigycape.utils.VersionChecker;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import io.github.retrooper.packetevents.util.viaversion.ViaVersionUtil;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
+import lombok.Getter;
+import lombok.Setter;
 import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.meta.display.ItemDisplayMeta;
 import me.tofaa.entitylib.wrapper.WrapperEntity;
@@ -38,6 +40,8 @@ import org.joml.Vector3f;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static fr.cocoraid.prodigycape.listener.PacketEventsListener.calculateBodyYaw;
+
 public class PlayerCape {
 
 
@@ -53,22 +57,35 @@ public class PlayerCape {
 
     private BukkitTask task;
 
+    @Getter
     private boolean visible = true;
     private boolean spawned = false;
 
     private ItemStack capeItem;
+    @Getter
     private WrapperEntity capeDisplay;
     private Player player;
+    @Getter
     private Cape cape;
 
 
     // moving data
     private float currentCapeXRotation = DEFAULT_CAPE_X_ROTATION;
+    @Setter
     private float currentSpeed = 0.0f;
     private float sneakOffset = 0.0f;
+    @Setter
+    @Getter
     private float lastBodyYaw = 0.0f;
+    @Setter
+    @Getter
     private float currentBodyYaw = 0.0f;
+    @Setter
+    @Getter
+    private float attackAnimation = 0.0f;
     private float targetCapeXRotation = DEFAULT_CAPE_X_ROTATION;
+    @Getter
+    @Setter
     private Location lastPosition;
     private Location lastLocation;
     private boolean isMoving = false;
@@ -119,7 +136,7 @@ public class PlayerCape {
 
         this.player = player;
         this.lastBodyYaw = player.getLocation().getYaw();
-        this.currentBodyYaw = player.getLocation().getYaw();
+        this.currentBodyYaw = lastBodyYaw;
 
         capeDisplay = new WrapperEntity(EntityTypes.ITEM_DISPLAY);
         forceSpawn(player);
@@ -164,6 +181,13 @@ public class PlayerCape {
                         isMoving = false;
                     }
                 }
+
+                if (attackAnimation > 0.0f) {
+                    attackAnimation -= 0.1f;
+                    currentBodyYaw = calculateBodyYaw(player, null, null, lastBodyYaw, currentBodyYaw, attackAnimation);
+                    isMoving = true;
+                }
+                if (attackAnimation < 0.0f) attackAnimation = 0.0f;
 
                 if (isMoving) {
                     targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
@@ -297,6 +321,8 @@ public class PlayerCape {
         Quaternion4f quaternion4f = new Quaternion4f(combinedRotation.x, combinedRotation.y, combinedRotation.z, combinedRotation.w);
 
         meta.setLeftRotation(quaternion4f);
+        meta.setTransformationInterpolationDuration(1);
+        meta.setInterpolationDelay(0);
 
 
         getViewerPlayers(player).forEach(p -> {
@@ -332,34 +358,6 @@ public class PlayerCape {
     }
 
 
-    public void setCurrentSpeed(float currentSpeed) {
-        this.currentSpeed = currentSpeed;
-    }
-
-    public float getLastBodyYaw() {
-        return lastBodyYaw;
-    }
-
-    public float getCurrentBodyYaw() {
-        return currentBodyYaw;
-    }
-
-    public void setCurrentBodyYaw(float currentBodyYaw) {
-        this.currentBodyYaw = currentBodyYaw;
-    }
-
-    public void setLastBodyYaw(float lastBodyYaw) {
-        this.lastBodyYaw = lastBodyYaw;
-    }
-
-    public Cape getCape() {
-        return cape;
-    }
-
-    public WrapperEntity getCapeDisplay() {
-        return capeDisplay;
-    }
-
     public void visible(boolean visibility) {
         if (visibility) {
             forceSpawn(player);
@@ -371,18 +369,6 @@ public class PlayerCape {
 
         }
         this.visible = visibility;
-    }
-
-    public void setLastPosition(Location lastPosition) {
-        this.lastPosition = lastPosition;
-    }
-
-    public Location getLastPosition() {
-        return lastPosition;
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
 

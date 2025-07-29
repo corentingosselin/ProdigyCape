@@ -78,7 +78,7 @@ public class CapeContributors {
             }
 
         } catch (Exception e) {
-            Bukkit.getLogger().warning("Failed to load contributors capes: " + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("§a[ProdigyCape] §cFailed to load contributors capes: " + e.getMessage());
         }
     }
 
