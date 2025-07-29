@@ -81,6 +81,14 @@
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>fr.cocoraid.locales</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>me.tofaa.entitylib</pattern>
+                            <shadedPattern>fr.cocoraid.entitylib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
+                            <shadedPattern>fr.cocoraid.hikari</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
