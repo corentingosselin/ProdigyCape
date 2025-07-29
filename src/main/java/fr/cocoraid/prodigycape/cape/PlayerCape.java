@@ -121,7 +121,7 @@ public class PlayerCape {
         this.lastBodyYaw = player.getLocation().getYaw();
         this.currentBodyYaw = player.getLocation().getYaw();
 
-        capeDisplay = EntityLib.getApi().createEntity(EntityTypes.ITEM_DISPLAY);
+        capeDisplay = new WrapperEntity(EntityTypes.ITEM_DISPLAY);
         forceSpawn(player);
 
         task = new BukkitRunnable() {

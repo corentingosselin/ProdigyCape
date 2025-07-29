@@ -78,7 +78,7 @@ public class CapeContributors {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Bukkit.getLogger().warning("Failed to load contributors capes: " + e.getMessage());
         }
     }
 
