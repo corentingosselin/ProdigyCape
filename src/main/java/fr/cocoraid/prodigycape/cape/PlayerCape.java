@@ -190,7 +190,7 @@ public class PlayerCape {
                 }
                 if (attackAnimation < 0.0f) attackAnimation = 0.0f;
 
-                sneakOffset = (isSneaking && player.isFlying()) ? 20.0f : 0F;
+                sneakOffset = (isSneaking && !player.isFlying()) ? 20.0f : 0F;
 
                 if (isMoving) {
                     targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
