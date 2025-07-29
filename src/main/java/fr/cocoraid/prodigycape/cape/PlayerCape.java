@@ -73,6 +73,7 @@ public class PlayerCape {
     private float currentCapeXRotation = DEFAULT_CAPE_X_ROTATION;
     @Setter
     private float currentSpeed = 0.0f;
+    private boolean isSneaking = false;
     private float sneakOffset = 0.0f;
     @Setter
     @Getter
@@ -188,6 +189,8 @@ public class PlayerCape {
                     isMoving = true;
                 }
                 if (attackAnimation < 0.0f) attackAnimation = 0.0f;
+
+                sneakOffset = (isSneaking && player.isFlying()) ? 20.0f : 0F;
 
                 if (isMoving) {
                     targetCapeXRotation = Math.min((DEFAULT_CAPE_X_ROTATION) + (currentSpeed * 100), 100);
@@ -345,6 +348,8 @@ public class PlayerCape {
 
 
     public void onSneakEvent(boolean isSneaking) {
+        this.isSneaking = isSneaking;
+
         if (player.isFlying()) return;
         // Set the X rotation to 20 degrees when sneaking, and reset it when not sneaking
         sneakOffset = isSneaking ? 20.0f : 0F;
