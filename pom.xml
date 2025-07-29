@@ -38,8 +38,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>fr.lehtto.maven.plugins</groupId>
+                <artifactId>servermc-maven-plugin</artifactId>
+                <version>0.1.0</version>
                 <configuration>
-                    <outputDirectory>/Users/prodigy/Documents/minecraft/serveur/1.20.1/plugins</outputDirectory>
+                    <mcVersion>1.21.8</mcVersion>
+                    <serverDirectory>${project.basedir}/server_mc</serverDirectory>
+                    <eula>true</eula>
+                    <additionalPlugins>
+                        <plugin>
+                            <name>packetevents</name>
+                            <url>https://github.com/retrooper/packetevents/releases/download/v2.9.4/packetevents-spigot-2.9.4.jar</url>
+                        </plugin>
+                    </additionalPlugins>
                 </configuration>
             </plugin>
 
@@ -66,6 +80,14 @@
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>fr.cocoraid.locales</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.tofaa.entitylib</pattern>
+                            <shadedPattern>fr.cocoraid.entitylib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
+                            <shadedPattern>fr.cocoraid.hikari</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -115,6 +137,12 @@
             <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
 
+        <repository>
+            <id>evoke-snapshots</id>
+            <name>EvokeGames Maven</name>
+            <url>https://maven.evokegames.gg/snapshots</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -123,7 +151,7 @@
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>
             <version>2.4.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -135,9 +163,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.Tofaa2.EntityLib</groupId>
+            <groupId>me.tofaa.entitylib</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.3.1-SNAPSHOT</version>
+            <version>3.0.3-SNAPSHOT</version>
         </dependency>
 
         <dependency>

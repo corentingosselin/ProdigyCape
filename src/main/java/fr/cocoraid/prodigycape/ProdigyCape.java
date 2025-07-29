@@ -98,7 +98,6 @@ public final class ProdigyCape extends JavaPlugin {
 
         APIConfig settings = new APIConfig(PacketEvents.getAPI())
                 .tickTickables()
-                .trackPlatformEntities()
                 .usePlatformLogger();
 
         EntityLib.init(platform, settings);
